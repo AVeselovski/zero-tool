@@ -76,7 +76,7 @@ export async function getStaticProps() {
       })),
     },
     // regenerate (re-pregenerate) static page on the server every hour if there are requests
-    revalidate: 3600,
+    revalidate: 1,
   };
 }
 

@@ -41,7 +41,7 @@ export async function getStaticPaths() {
   client.close();
 
   return {
-    fallback: false,
+    fallback: "blocking",
     paths: events.map((e) => ({ params: { eventId: e._id.toString() } })),
   };
 }
