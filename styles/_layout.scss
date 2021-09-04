@@ -1,0 +1,25 @@
+.container {
+  margin: 0 auto;
+  max-width: 52rem;
+  min-height: calc(100vh - 8rem);
+  padding: 3.25rem 0.25rem 3rem;
+
+  @media (min-width: 48rem) {
+    padding: 1rem 1rem 4rem;
+  }
+}
+
+.container-fluid {
+  margin: 0;
+  min-height: calc(100vh - 8rem);
+  padding: 3.25rem 0.25rem 3rem;
+  width: 100%;
+
+  @media (min-width: 48rem) {
+    padding: 1rem 0.25rem 4rem;
+  }
+}
+
+.content {
+  padding-top: 0.5rem;
+}
