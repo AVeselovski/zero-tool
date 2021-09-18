@@ -1,24 +1,8 @@
 // zero-tool.com/events
-import { MongoClient } from "mongodb"; // won't be included on clientside
+import dbConnect from "../../lib/dbConnect"; // won't be included on clientside
+import Event from "../../models/event"; // won't be included on clientside
 
 import EventList from "../../components/events/EventList";
-
-// const DUMMY_EVENTS = [
-//   {
-//     id: "e1",
-//     title: "First event",
-//     image: "http://placehold.it/1280x720",
-//     address: "Pickle avenue 7, 69420 Pickle City",
-//     description: "Some event regarding stuff...",
-//   },
-//   {
-//     id: "e2",
-//     title: "Second event",
-//     image: "http://placehold.it/1280x720",
-//     address: "Pickle avenue 7, 69420 Pickle City",
-//     description: "Some event regarding stuff...",
-//   },
-// ];
 
 function EventsPage(props) {
   return (
@@ -55,27 +39,20 @@ export async function getStaticProps() {
   // good for:
   //  - should always be prioritized (unless getServerSideProps is needed)
 
-  const dbConnection =
-    "mongodb+srv://zero-user-1:6WMbpukv2IRrdbKF@zerocluster.p5ljo.mongodb.net/events?retryWrites=true&w=majority";
+  await dbConnect();
 
-  const client = await MongoClient.connect(dbConnection);
-  const db = client.db();
-  const eventsCollection = db.collection("events");
-
-  const events = await eventsCollection.find().toArray();
-
-  client.close();
+  const result = await Event.find({});
 
   return {
     props: {
-      events: events.map((e) => ({
+      events: result.map((e) => ({
         id: e._id.toString(),
         title: e.title,
         image: e.image,
         address: e.address,
       })),
     },
-    // regenerate (re-pregenerate) static page on the server every hour if there are requests
+    // regenerate (re-pregenerate) static page on the server every second if there are requests
     revalidate: 1,
   };
 }

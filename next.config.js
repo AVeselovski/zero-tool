@@ -5,4 +5,10 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
+  images: {
+    domains: ["picsum.photos"],
+  },
+  // env: {
+  //   MONGODB_URI: "",
+  // },
 };

@@ -1,7 +1,7 @@
 .button {
   background-color: transparent;
   border: 1px solid transparent;
-  border-radius: 0;
+  border-radius: 3px;
   font-size: 1rem;
   font-weight: 400;
   padding: 0.5rem 1rem;
@@ -55,8 +55,8 @@
 
 .button.icon {
   border: none;
-  border-radius: 6px;
-  font-size: 1.5rem;
+  border-radius: 3px;
+  font-size: 1.25rem;
   padding: 0.25rem;
 
   &.small {
@@ -68,6 +68,10 @@
   }
 
   &.big {
+    font-size: 1.5rem;
+  }
+
+  &.giant {
     font-size: 2rem;
   }
 

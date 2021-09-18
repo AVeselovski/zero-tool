@@ -6,7 +6,7 @@ export default function NewEventPage() {
   const router = useRouter();
 
   async function addEventHandler(data) {
-    const response = await fetch("/api/v1/events/new", {
+    const response = await fetch("/api/v1/events", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

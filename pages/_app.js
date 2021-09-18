@@ -1,23 +1,29 @@
 import Script from "next/script";
-// import { useRouter } from "next/router";
 
 import "../styles/globals.css";
 import "../styles/app.scss";
 
-import Layout from "../components/layout/Layout";
+import { StoreProvider } from "../utils/store";
 
-function MyApp({ Component, pageProps }) {
-  // const router = useRouter();
-  // const eventsRoute = router.route.split("/").includes("events");
+import Layout from "../components/ui/Layout";
 
+export default function Application({ Component, pageProps }) {
   return (
     <>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      <Script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></Script>
+      <StoreProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </StoreProvider>
+
+      <Script
+        src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.esm.js"
+        type="module"
+      ></Script>
+      <Script
+        nomodule=""
+        src="https://unpkg.com/ionicons@5.0.0/dist/ionicons/ionicons.js"
+      ></Script>
     </>
   );
 }
-
-export default MyApp;

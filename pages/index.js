@@ -1,4 +1,5 @@
 // zero-tool.com/
+import Link from "next/link";
 import Head from "next/head";
 
 export default function HomePage() {
@@ -10,6 +11,7 @@ export default function HomePage() {
       </Head>
       <div className="container-fluid">
         <h1>Home page</h1>
+        <Link href="/dashboard">Dashboard</Link>
       </div>
     </>
   );

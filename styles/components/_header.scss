@@ -1,6 +1,7 @@
 .app-header {
   align-content: center;
   background-color: $bg;
+  /* backdrop-filter: blur(1px); */
   display: inline-grid;
   grid-template-columns: auto auto;
   height: 4rem;
@@ -35,7 +36,7 @@
   }
 
   &-brand {
-    color: $grey;
+    color: $grey-dark;
     font-size: 1.25rem;
     font-weight: 500;
     margin-right: 0.5rem;
@@ -54,7 +55,7 @@
     font-size: 1.25rem;
     font-weight: 500;
     margin-left: 0.5rem;
-    margin-right: 1.5rem;
+    margin-right: 0.5rem;
     position: relative;
     white-space: nowrap;
 
@@ -69,6 +70,7 @@
   &-actions {
     align-items: center;
     display: flex;
+    margin-left: 1rem;
   }
 
   @media (min-width: 48rem) {
@@ -94,6 +96,8 @@
     ul {
       display: none;
       list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
     li a {

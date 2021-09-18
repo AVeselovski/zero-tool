@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 function EventItem(props) {
   const router = useRouter();
@@ -11,7 +12,12 @@ function EventItem(props) {
     <div className="mb-2/4">
       <div className="image-card">
         <div className="image-card-header">
-          <img src={props.image} alt={props.title} />
+          <Image
+            alt={props.title}
+            src={props.image}
+            height={720}
+            width={1280}
+          />
         </div>
         <div className="image-card-body">
           <h3 className="mb-1/4">{props.title}</h3>

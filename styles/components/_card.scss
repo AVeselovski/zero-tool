@@ -1,10 +1,36 @@
 .card {
   background-color: $bg;
   border: 1px solid $grey-light;
-  border-radius: 6px;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+
+  &-header {
+    align-items: center;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+
+  &-title {
+    align-items: center;
+    display: flex;
+    font-weight: 400;
+
+    :first-child {
+      color: $grey;
+      margin-right: 0.5rem;
+    }
+  }
 
   &-body {
-    padding: 1rem;
+    line-height: 1.25;
+    padding: 0.5rem;
+  }
+
+  &-footer {
+    padding: 0.5rem;
   }
 
   &-actions {
@@ -14,13 +40,37 @@
     padding-top: 1rem;
   }
 }
-.image-card {
-  background-color: $bg;
-  border-radius: 6px;
+
+.card-group {
+  @extend .card;
+
+  height: 100%;
+  padding: 0.5rem;
 
   &-header {
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    @extend .card-header;
+
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    padding: 0;
+  }
+
+  &-title {
+    @extend .card-title;
+  }
+
+  .column-button {
+    width: 100%;
+  }
+}
+
+.image-card {
+  background-color: $bg;
+  border-radius: 3px;
+
+  &-header {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
     max-height: 20rem;
     overflow: hidden;
     width: 100%;
@@ -34,7 +84,7 @@
 
   &-body {
     border: 1px solid $grey-light;
-    border-radius: 0 0 6px 6px;
+    border-radius: 0 0 3px 3px;
     padding: 1rem;
   }
 

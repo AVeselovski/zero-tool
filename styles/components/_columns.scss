@@ -1,0 +1,24 @@
+.columns-container {
+  overflow-x: visible;
+}
+.columns {
+  min-height: calc(100vh - 13rem);
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  justify-content: flex-start;
+
+  > .column {
+    box-sizing: content-box;
+    flex-shrink: 0;
+    width: 18rem;
+
+    > .column-button {
+      height: 2.5rem;
+      width: 100%;
+    }
+  }
+  > .column:last-of-type {
+    padding-right: 1.75rem;
+  }
+}

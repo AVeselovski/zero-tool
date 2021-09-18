@@ -45,6 +45,10 @@ img {
   max-width: 100%;
 }
 
+ul {
+  padding-left: 1.5rem;
+}
+
 main {
   padding: 0 0.5rem;
   padding-top: 4rem;
@@ -88,7 +92,7 @@ a:hover {
 button {
   background-color: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: 3px;
   cursor: pointer;
   outline: none;
   padding: 0.25rem;
@@ -98,9 +102,16 @@ button {
   }
 }
 button:hover:not(:disabled),
-button:active:not(:disabled) {
+button:active:not(:disabled),
+button:focus {
   background-color: $grey-light;
 }
 button.button:disabled {
   color: $grey;
+}
+
+// nice
+::selection {
+  color: rgb(255, 255, 255);
+  background-color: rgb(87, 62, 222);
 }
