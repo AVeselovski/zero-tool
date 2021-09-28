@@ -10,7 +10,7 @@ async function handler(req, res) {
   switch (method) {
     case "GET":
       try {
-        const projects = await Project.find({});
+        const projects = await Project.find({}).select({ title: 1 });
 
         res.status(200).json({ success: true, data: projects });
       } catch (error) {

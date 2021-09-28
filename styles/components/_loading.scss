@@ -26,6 +26,19 @@
     animation: loader-ring 1.2s linear infinite;
   }
 }
+.loader.mini {
+  .loader-ring {
+    width: 1rem;
+    height: 1rem;
+  }
+  .loader-ring:after {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid $grey;
+    border-color: $grey transparent $grey transparent;
+    margin: 0;
+  }
+}
 .loader.block {
   align-items: center;
   height: 2.5rem;
@@ -37,9 +50,10 @@
     height: 2.5rem;
   }
   .loader-ring:after {
-    width: 2rem;
-    height: 2rem;
-    border: 3px solid $grey;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid $grey;
     border-color: $grey transparent $grey transparent;
+    margin: 0.5rem;
   }
 }

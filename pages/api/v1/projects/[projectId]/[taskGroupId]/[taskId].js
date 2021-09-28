@@ -32,7 +32,7 @@ async function handler(req, res) {
         // save document
         try {
           await project.save();
-          res.status(200).json({ success: true, data: null });
+          res.status(200).json({ success: true, data: taskId });
         } catch (error) {
           handleError(error, res);
         }

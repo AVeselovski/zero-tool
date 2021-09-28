@@ -1,18 +1,21 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-
-import { useStore } from "../../utils/store";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setActiveProject,
+  selectProjects,
+  selectActiveProject,
+} from "../../features/projects/projectsSlice";
 
 function Header() {
-  const { state, dispatch } = useStore();
+  const activeProject = useSelector(selectActiveProject);
+  const projects = useSelector(selectProjects);
+  const dispatch = useDispatch();
+
   const router = useRouter();
 
-  const _setProject = (value) => {
-    dispatch({
-      type: "SET_ACTIVE_PROJECT",
-      activeProject: value,
-    });
+  const setProject = (value) => {
+    dispatch(setActiveProject(value));
     router.push(`/projects/${value}`);
   };
 
@@ -23,7 +26,7 @@ function Header() {
           <ion-icon name="menu"></ion-icon>
         </button>
         <h1 className="app-header-brand">
-          <Link href="/">Zero Tool</Link>
+          <Link href="/dashboard">Zero Tool</Link>
         </h1>
         {/* 
         <h2 className="app-header-sub-brand">
@@ -32,13 +35,13 @@ function Header() {
         */}
         <div className="app-header-actions">
           <select
-            onChange={(e) => _setProject(e.target.value)}
-            value={state.activeProject}
+            onChange={(e) => setProject(e.target.value)}
+            value={activeProject}
           >
             <option disabled key="empty" value="">
               Select...
             </option>
-            {state.projects.map((p) => (
+            {projects.map((p) => (
               <option key={p._id} value={p._id}>
                 {p.title}
               </option>

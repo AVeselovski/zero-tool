@@ -1,5 +1,4 @@
 // zero-tool.com/projects/new
-
 export default function NewProjectPage() {
   return (
     <div className="container">

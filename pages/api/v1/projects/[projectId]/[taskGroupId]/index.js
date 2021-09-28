@@ -55,7 +55,7 @@ async function handler(req, res) {
         // save document
         try {
           await project.save();
-          res.status(201).json({ success: true, data: null });
+          res.status(201).json({ success: true, data: taskGroupId });
         } catch (error) {
           handleError(error, res);
         }

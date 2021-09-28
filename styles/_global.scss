@@ -107,7 +107,7 @@ button:focus {
   background-color: $grey-light;
 }
 button.button:disabled {
-  color: $grey;
+  opacity: 0.5;
 }
 
 // nice

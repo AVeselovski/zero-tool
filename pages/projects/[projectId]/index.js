@@ -1,104 +1,72 @@
 // zero-tool.com/projects/:projectId
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useStore } from "../../../utils/store";
-import api from "../../../utils/api";
+import {
+  useGetAllProjectsQuery,
+  // useGetProjectByIdQuery,
+  useLazyGetProjectByIdQuery,
+} from "../../../services/zeroApi";
+import {
+  setProjects,
+  setActiveProject,
+} from "../../../features/projects/projectsSlice";
+import {
+  setTaskGroups,
+  selectTaskGroups,
+} from "../../../features/tasks/tasksSlice";
 
-import TaskGroup from "../../../components/TaskGroup";
-import Loader from "../../../components/ui/Loader";
+import TaskGroup from "../../../components/tasks/TaskGroup";
+import NewGroup from "../../../components/tasks/NewGroup";
+// import Loader from "../../../components/ui/Loader";
 
-export default function ProjectPage() {
-  const { state, dispatch } = useStore();
-  const [showForm, setShowForm] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+export default function ProjectPage(props) {
   const router = useRouter();
+  const queryId = router.query.projectId;
 
-  const titleInputRef = useRef();
+  const groups = useSelector(selectTaskGroups);
+  const dispatch = useDispatch();
 
-  const toggleForm = () => {
-    setShowForm((val) => !val);
-  };
+  const allProjects = useGetAllProjectsQuery();
+  const [getProjectById, project] = useLazyGetProjectByIdQuery();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    const taskTitle = titleInputRef.current.value;
-
-    const taskGroupData = {
-      title: taskTitle,
-    };
-
-    setIsSubmitting(true);
-
-    const { data, error } = await api(
-      `/projects/${router.query.projectId}/new-group`,
-      "POST",
-      taskGroupData
-    );
-
-    setIsSubmitting(false);
-
-    if (error) {
-      // TODO: handle error dispatch
-      console.group("ERROR:", error);
-    } else {
-      /** (?) How to handle "actions" with side effects (e.g. "GET_TASKS") */
-      dispatch({ type: "ADD_TASK_GROUP", taskGroup: data });
-      /** (?) */
-
-      setShowForm((val) => !val);
-    }
-  };
-
+  // set all available projects listing
   useEffect(() => {
-    const _getProject = async () => {
-      const { data } = await api(`/projects/${router.query.projectId}`);
-
-      dispatch({ type: "SET_ACTIVE_PROJECT", activeProject: data._id });
-      dispatch({ type: "SET_TASK_GROUPS", taskGroups: data.taskGroups });
-    };
-
-    const _getProjects = async () => {
-      const { data } = await api(`/projects`);
-
-      dispatch({ type: "SET_PROJECTS", projects: data });
-    };
-
-    if (router.query.projectId) {
-      _getProject();
-      _getProjects();
+    if (allProjects.data) {
+      dispatch(setProjects(allProjects.data));
     }
-  }, [router.query.projectId, dispatch]);
+  }, [allProjects, dispatch]);
+
+  // get project on project query change
+  useEffect(() => {
+    if (queryId) {
+      getProjectById(queryId);
+      dispatch(setActiveProject(queryId));
+    }
+  }, [queryId, getProjectById, dispatch]);
+
+  // set project tasks data
+  useEffect(() => {
+    if (!project.isFetching && project.data) {
+      dispatch(setTaskGroups(project.data.taskGroups));
+    }
+  }, [project, dispatch]);
 
   return (
     <div className="container-fluid x-scroll">
       <div className="columns-container">
         <div className="columns">
-          {state.taskGroups.map((group) => (
+          {/** TODO: render skeleton loaders while fetching */}
+          {groups.map((group) => (
             <div className="column" key={group._id}>
-              <TaskGroup taskGroup={group} />
+              <TaskGroup group={group} />
             </div>
           ))}
+
+          {/** TODO: do not render while fetching */}
           <div className="column">
-            {isSubmitting && <Loader isBlock />}
-            {showForm && !isSubmitting && (
-              <form onSubmit={submitHandler}>
-                <input
-                  autoFocus
-                  className="big"
-                  onBlur={toggleForm}
-                  placeholder="Task list title..."
-                  ref={titleInputRef}
-                  type="text"
-                />
-              </form>
-            )}
-            {!showForm && !isSubmitting && (
-              <button className="button column-button" onClick={toggleForm}>
-                + Add column
-              </button>
-            )}
+            <NewGroup />
           </div>
         </div>
       </div>

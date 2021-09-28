@@ -1,21 +1,21 @@
-import { useRouter } from "next/router";
 import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import api from "../utils/api";
-import { useStore } from "../utils/store";
+import { addTask, selectTask } from "../../features/tasks/tasksSlice";
 
-import Modal from "./ui/Modal";
-import Loader from "./ui/Loader";
+import Modal from "../ui/Modal";
+import Loader from "../ui/Loader";
 
 const TaskModal = ({
   isOpen = false,
   onClose = () => {},
-  taskGroupId = "",
+  groupId = null,
+  taskId = null,
 }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { dispatch } = useStore();
 
-  const router = useRouter();
+  const task = useSelector(selectTask(groupId, taskId));
+  const dispatch = useDispatch();
 
   const titleInputRef = useRef();
   const bodyInputRef = useRef();
@@ -31,42 +31,40 @@ const TaskModal = ({
       body: taskBody,
     };
 
-    setIsSubmitting(true);
-
-    const { data, error } = await api(
-      `/projects/${router.query.projectId}/${taskGroupId}`,
-      "POST",
-      taskData
-    );
-
-    setIsSubmitting(false);
-
-    if (error) {
-      // TODO: handle error dispatch
-      console.group("ERROR:", error);
+    if (task?._id) {
+      // TODO: implement updating
+      console.log("UPDATED");
     } else {
-      /** (?) How to handle "actions" with side effects (e.g. "GET_TASKS") */
-      dispatch({ type: "ADD_TASK", task: data, taskGroupId });
-      /** (?) */
-
-      onClose(false);
+      try {
+        setIsSubmitting(true);
+        await dispatch(addTask({ groupId, task: taskData })).unwrap();
+      } catch (error) {
+        console.error("Failed to save new task: ", error);
+      } finally {
+        setIsSubmitting(false);
+        onClose(false);
+      }
     }
   };
 
   return (
     <Modal
       isOpen={isOpen}
+      onAppear={() => titleInputRef?.current?.focus()}
       onClose={() => {
         onClose(false);
       }}
       size="medium"
     >
-      <Modal.Header onClose={() => onClose(false)}>Add task</Modal.Header>
+      <Modal.Header onClose={() => onClose(false)}>
+        {task ? "Edit task" : "Add task"}
+      </Modal.Header>
       <Modal.Body>
         <form id="task-form" onSubmit={submitHandler}>
           <div className="input-group">
             <label htmlFor="title">Title</label>
             <input
+              defaultValue={task ? task.title : ""}
               disabled={isSubmitting}
               id="title"
               ref={titleInputRef}
@@ -77,6 +75,7 @@ const TaskModal = ({
           <div className="input-group">
             <label htmlFor="body">Body</label>
             <textarea
+              defaultValue={task ? task.body : ""}
               disabled={isSubmitting}
               id="body"
               ref={bodyInputRef}
