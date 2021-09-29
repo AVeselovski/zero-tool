@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { removeTaskGroup, removeTask } from "../../features/tasks/tasksSlice";
+import { removeTask } from "../../features/tasks/tasksSlice";
 
+import GroupHeader from "./GroupHeader";
 import Task from "./Task";
 import TaskModal from "./TaskModal";
-import Dropdown from "../ui/Dropdown";
-import Loader from "../ui/Loader";
 
 const TaskGroup = ({ group }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,17 +24,6 @@ const TaskGroup = ({ group }) => {
     setIsOpen(true);
   }
 
-  async function handleDeleteTaskGroup(id) {
-    try {
-      setIsSubmitting(true);
-      await dispatch(removeTaskGroup(id)).unwrap();
-    } catch (error) {
-      console.error("Failed to delete task group: ", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   async function handleDeleteTask(id) {
     try {
       setIsSubmitting(true);
@@ -50,38 +38,8 @@ const TaskGroup = ({ group }) => {
   return (
     <>
       <div className="card-group">
-        <div className="card-group-header">
-          <div className="card-group-title">
-            <ion-icon name="swap-horizontal"></ion-icon>
-            {group.title}
-          </div>
-          <Dropdown
-            className="button icon round"
-            position="right"
-            toggleContent={<ion-icon name="ellipsis-horizontal"></ion-icon>}
-          >
-            <Dropdown.List>
-              <button className="button" disabled={isSubmitting}>
-                <ion-icon name="create-outline"></ion-icon> Edit column
-              </button>
-              <button
-                className="button danger"
-                disabled={isSubmitting}
-                onClick={() => handleDeleteTaskGroup(group._id)}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader isMini /> Delete column
-                  </>
-                ) : (
-                  <>
-                    <ion-icon name="trash"></ion-icon> Delete column
-                  </>
-                )}
-              </button>
-            </Dropdown.List>
-          </Dropdown>
-        </div>
+        <GroupHeader groupId={group._id} title={group.title} />
+
         <div>
           {group.tasks.map((task) => (
             <Task

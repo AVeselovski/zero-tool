@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addTask, selectTask } from "../../features/tasks/tasksSlice";
+import {
+  addTask,
+  updateTask,
+  selectTask,
+} from "../../features/tasks/tasksSlice";
 
 import Modal from "../ui/Modal";
 import Loader from "../ui/Loader";
@@ -31,19 +35,16 @@ const TaskModal = ({
       body: taskBody,
     };
 
-    if (task?._id) {
-      // TODO: implement updating
-      console.log("UPDATED");
-    } else {
-      try {
-        setIsSubmitting(true);
-        await dispatch(addTask({ groupId, task: taskData })).unwrap();
-      } catch (error) {
-        console.error("Failed to save new task: ", error);
-      } finally {
-        setIsSubmitting(false);
-        onClose(false);
-      }
+    try {
+      setIsSubmitting(true);
+      task?._id
+        ? await dispatch(updateTask({ ...task, ...taskData })).unwrap()
+        : await dispatch(addTask({ groupId, task: taskData })).unwrap();
+    } catch (error) {
+      console.error("Failed to save new task: ", error);
+    } finally {
+      setIsSubmitting(false);
+      onClose(false);
     }
   };
 

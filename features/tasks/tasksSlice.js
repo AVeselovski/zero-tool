@@ -19,6 +19,17 @@ export const addTaskGroup = createAsyncThunk(
   }
 );
 
+// update a task list (group)
+export const updateTaskGroup = createAsyncThunk(
+  "tasks/updateTaskGroup",
+  async (group, { getState }) => {
+    const projectId = getState().projects.activeProject;
+    const response = await api.put(`projects/${projectId}/${group._id}`, group);
+
+    return response.data;
+  }
+);
+
 // remove a task list (group) from state
 export const removeTaskGroup = createAsyncThunk(
   "tasks/removeTaskGroup",
@@ -38,6 +49,20 @@ export const addTask = createAsyncThunk(
     const response = await api.post(`projects/${projectId}/${groupId}`, task);
 
     return { groupId, task: response.data };
+  }
+);
+
+// update a task
+export const updateTask = createAsyncThunk(
+  "tasks/updateTask",
+  async (task, { getState }) => {
+    const projectId = getState().projects.activeProject;
+    const response = await api.put(
+      `projects/${projectId}/${task._groupId}/${task._id}`,
+      task
+    );
+
+    return response.data;
   }
 );
 
@@ -81,7 +106,19 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle delete task results
+    // handle put group results
+    builder.addCase(updateTaskGroup.fulfilled, (state, action) => {
+      const groups = state.groups.map((g) =>
+        g._id === action.payload._id ? action.payload : g
+      );
+
+      return { ...state, groups, status: "succeeded" };
+    });
+    builder.addCase(updateTaskGroup.rejected, (state, action) => {
+      return { ...state, status: "failed", error: action.error.message };
+    });
+
+    // handle delete group results
     builder.addCase(removeTaskGroup.fulfilled, (state, action) => {
       const groups = state.groups.filter((t) => t._id !== action.payload);
 
@@ -103,6 +140,23 @@ const slice = createSlice({
       return { ...state, groups, status: "succeeded" };
     });
     builder.addCase(addTask.rejected, (state, action) => {
+      return { ...state, status: "failed", error: action.error.message };
+    });
+
+    // handle put task results
+    builder.addCase(updateTask.fulfilled, (state, action) => {
+      const group = state.groups.find((g) => g._id === action.payload._groupId);
+      const tasks = group.tasks.map((t) =>
+        t._id === action.payload._id ? action.payload : t
+      );
+      const updatedGroup = { ...group, tasks };
+      const groups = state.groups.map((g) =>
+        g._id === updatedGroup._id ? updatedGroup : g
+      );
+
+      return { ...state, groups, status: "succeeded" };
+    });
+    builder.addCase(updateTask.rejected, (state, action) => {
       return { ...state, status: "failed", error: action.error.message };
     });
 

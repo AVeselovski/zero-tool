@@ -66,6 +66,14 @@ api.post = function (endpoint, body) {
 
 /**
  * @param {string} endpoint Endpoint path (with id).
+ * @param {Object} body Request body.
+ */
+api.put = function (endpoint, body) {
+  return api(endpoint, "PUT", body);
+};
+
+/**
+ * @param {string} endpoint Endpoint path (with id).
  */
 api.delete = function (endpoint) {
   return api(endpoint, "DELETE");

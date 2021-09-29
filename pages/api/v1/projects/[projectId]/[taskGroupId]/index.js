@@ -29,13 +29,34 @@ async function handler(req, res) {
         // manipulate subdocuments
         const taskGroup = project.taskGroups.id(taskGroupId);
         const id = mongoose.Types.ObjectId();
-        taskGroup.tasks.push({ ...req.body, _id: id });
+        taskGroup.tasks.push({ ...req.body, _id: id, _groupId: taskGroupId });
         const newTask = taskGroup.tasks.find((t) => t._id === id);
 
         // save document
         try {
           await project.save();
           res.status(201).json({ success: true, data: newTask });
+        } catch (error) {
+          handleError(error, res);
+        }
+      } catch (error) {
+        handleError(error, res);
+      }
+      break;
+
+    case "PUT":
+      try {
+        // get document
+        const project = await Project.findById(projectId);
+
+        // manipulate subdocuments
+        const taskGroup = project.taskGroups.id(taskGroupId);
+        taskGroup.title = req.body.title || taskGroup.title;
+
+        // save document
+        try {
+          await project.save();
+          res.status(201).json({ success: true, data: taskGroup });
         } catch (error) {
           handleError(error, res);
         }

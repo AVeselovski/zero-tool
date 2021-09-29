@@ -19,6 +19,10 @@ const taskSchema = new mongoose.Schema(
       required: [true, "Task needs a body"],
       trim: true,
     },
+
+    _groupId: {
+      type: String,
+    },
   },
 
   { timestamps: true }
