@@ -1,13 +1,13 @@
 import Script from "next/script";
 import { Provider } from "react-redux";
 
-import "../styles/globals.css";
-import "../styles/app.scss";
+import "styles/globals.css";
+import "styles/app.scss";
 
-import { StoreProvider } from "../utils/store";
-import { store } from "../app/store";
+import { StoreProvider } from "app/contextStore";
+import { store } from "app/store";
 
-import Layout from "../components/ui/Layout";
+import Layout from "@components/ui/Layout";
 
 export default function Application({ Component, pageProps }) {
   return (

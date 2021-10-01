@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { removeTask } from "../../features/tasks/tasksSlice";
+import { removeTask, moveTask } from "@features/tasks/tasksSlice";
 
 import GroupHeader from "./GroupHeader";
 import Task from "./Task";
@@ -29,7 +29,20 @@ const TaskGroup = ({ group }) => {
       setIsSubmitting(true);
       await dispatch(removeTask({ groupId: group._id, taskId: id })).unwrap();
     } catch (error) {
-      console.error("Failed to delete task: ", error);
+      console.error("Failed to delete task:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleMoveTask(id) {
+    try {
+      setIsSubmitting(true);
+      await dispatch(
+        moveTask({ currentPosition: group.position, taskId: id })
+      ).unwrap();
+    } catch (error) {
+      console.error("Failed to move task:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -48,6 +61,7 @@ const TaskGroup = ({ group }) => {
               isSubmitting={isSubmitting}
               onDelete={handleDeleteTask}
               onEdit={onEditTask}
+              onMove={handleMoveTask}
             />
           ))}
           <button

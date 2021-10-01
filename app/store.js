@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
-import { zeroApi } from "../services/zeroApi";
-import projectsReducer from "../features/projects/projectsSlice";
-import tasksReducer from "../features/tasks/tasksSlice";
+import { zeroApi } from "@services/zeroApi";
+import projectsReducer from "@features/projects/projectsSlice";
+import tasksReducer from "@features/tasks/tasksSlice";
 
 export const store = configureStore({
   reducer: {

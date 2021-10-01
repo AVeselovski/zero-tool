@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   setActiveProject,
   selectProjects,
   selectActiveProject,
-} from "../../features/projects/projectsSlice";
+} from "@features/projects/projectsSlice";
 
 function Header() {
   const activeProject = useSelector(selectActiveProject);

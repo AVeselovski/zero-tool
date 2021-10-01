@@ -1,6 +1,6 @@
 // /api/v1/projects/:projectId/:taskGroupId/:taskId
-import dbConnect from "../../../../../../lib/dbConnect";
-import Project from "../../../../../../models/project";
+import dbConnect from "lib/dbConnect";
+import Project from "models/project";
 
 function handleError(error, res) {
   res.status(500).json({

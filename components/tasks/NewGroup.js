@@ -1,9 +1,9 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { addTaskGroup } from "../../features/tasks/tasksSlice";
+import { addTaskGroup } from "@features/tasks/tasksSlice";
 
-import Loader from "../ui/Loader";
+import Loader from "@components/ui/Loader";
 
 const NewGroup = () => {
   const [showForm, setShowForm] = useState(false);
@@ -29,7 +29,7 @@ const NewGroup = () => {
       setIsSubmitting(true);
       await dispatch(addTaskGroup(taskGroupData)).unwrap();
     } catch (error) {
-      console.error("Failed to save new group: ", error);
+      console.error("Failed to save new group:", error);
     } finally {
       setIsSubmitting(false);
       setShowForm((val) => !val);

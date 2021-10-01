@@ -1,13 +1,10 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-import {
-  removeTaskGroup,
-  updateTaskGroup,
-} from "../../features/tasks/tasksSlice";
+import { removeTaskGroup, updateTaskGroup } from "@features/tasks/tasksSlice";
 
-import Dropdown from "../ui/Dropdown";
-import Loader from "../ui/Loader";
+import Dropdown from "@components/ui/Dropdown";
+import Loader from "@components/ui/Loader";
 
 export default function GroupHeader({ groupId = "", title = "" }) {
   const [showForm, setShowForm] = useState(false);
@@ -34,7 +31,7 @@ export default function GroupHeader({ groupId = "", title = "" }) {
       setIsSubmitting(true);
       await dispatch(updateTaskGroup(taskGroupData)).unwrap();
     } catch (error) {
-      console.error("Failed to save new group: ", error);
+      console.error("Failed to save new group:", error);
     } finally {
       setIsSubmitting(false);
       setShowForm((val) => !val);
@@ -46,7 +43,7 @@ export default function GroupHeader({ groupId = "", title = "" }) {
       setIsSubmitting(true);
       await dispatch(removeTaskGroup(groupId)).unwrap();
     } catch (error) {
-      console.error("Failed to delete task group: ", error);
+      console.error("Failed to delete task group:", error);
     }
   }
 
@@ -78,8 +75,8 @@ export default function GroupHeader({ groupId = "", title = "" }) {
 
       <Dropdown
         className="button icon round"
-        position="right"
-        toggleContent={<ion-icon name="ellipsis-horizontal"></ion-icon>}
+        position="bottom"
+        toggleContent={<ion-icon name="ellipsis-vertical"></ion-icon>}
       >
         <Dropdown.List>
           <button

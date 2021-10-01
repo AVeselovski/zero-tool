@@ -1,5 +1,5 @@
 // /api/v1/test
-import dbConnect from "../../../lib/dbConnect";
+import dbConnect from "lib/dbConnect";
 
 dbConnect();
 

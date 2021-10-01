@@ -7,19 +7,16 @@ import {
   useGetAllProjectsQuery,
   // useGetProjectByIdQuery,
   useLazyGetProjectByIdQuery,
-} from "../../../services/zeroApi";
+} from "@services/zeroApi";
 import {
   setProjects,
   setActiveProject,
-} from "../../../features/projects/projectsSlice";
-import {
-  setTaskGroups,
-  selectTaskGroups,
-} from "../../../features/tasks/tasksSlice";
+} from "@features/projects/projectsSlice";
+import { setTaskGroups, selectTaskGroups } from "@features/tasks/tasksSlice";
 
-import TaskGroup from "../../../components/tasks/TaskGroup";
-import NewGroup from "../../../components/tasks/NewGroup";
-// import Loader from "../../../components/ui/Loader";
+import TaskGroup from "@components/tasks/TaskGroup";
+import NewGroup from "@components/tasks/NewGroup";
+// import Loader from "@components/ui/Loader";
 
 export default function ProjectPage(props) {
   const router = useRouter();

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "wicg-inert";
 
+import Portal from "@components/utils/Portal";
 import styles from "./modal.module.scss";
-import Portal from "../../utils/Portal";
 
 const modalSizes = {
   small: "20rem",

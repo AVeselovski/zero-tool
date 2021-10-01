@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import api from "../../utils/api";
+import api from "@services/api";
 
 const initialState = {
   groups: [],
@@ -79,18 +79,40 @@ export const removeTask = createAsyncThunk(
   }
 );
 
+export const moveTask = createAsyncThunk(
+  "tasks/moveTask",
+  async ({ currentPosition, taskId }, { getState, rejectWithValue }) => {
+    const projectId = getState().projects.activeProject;
+    const groupsLength = getState().tasks.groups.length;
+
+    if (groupsLength > currentPosition) {
+      const nextGroupId = getState().tasks.groups[currentPosition]._id;
+      const currentGroupId = getState().tasks.groups[currentPosition - 1]._id;
+
+      const response = await api.post(
+        `projects/${projectId}/${currentGroupId}/move-task`,
+        { nextGroupId, taskId }
+      );
+
+      return {
+        oldGroupId: currentGroupId,
+        oldTaskId: taskId,
+        newGroupId: nextGroupId,
+        newTask: response.data,
+      };
+    } else {
+      return rejectWithValue("Nowhere to move");
+    }
+  }
+);
+
 const slice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
     // populate task lists (groups)
     setTaskGroups: (state, action) => {
-      return { ...state, groups: action.payload };
-    },
-
-    // remove a task list (group) from state
-    removeTaskGroup: (state, action) => {
-      const groups = state.groups.filter((t) => t._id !== action.payload);
+      const groups = action.payload.map((g, i) => ({ ...g, position: i + 1 }));
 
       return { ...state, groups };
     },
@@ -98,7 +120,9 @@ const slice = createSlice({
   extraReducers(builder) {
     // handle post group results
     builder.addCase(addTaskGroup.fulfilled, (state, action) => {
-      const groups = [...state.groups, action.payload];
+      const groupsLength = state.groups.length;
+      const newGroup = { ...action.payload, position: groupsLength + 1 };
+      const groups = [...state.groups, newGroup];
 
       return { ...state, groups, status: "succeeded" };
     });
@@ -172,6 +196,36 @@ const slice = createSlice({
       return { ...state, groups, status: "succeeded" };
     });
     builder.addCase(removeTask.rejected, (state, action) => {
+      return { ...state, status: "failed", error: action.error.message };
+    });
+
+    // handle post task results
+    builder.addCase(moveTask.fulfilled, (state, action) => {
+      // remove old
+      const prevGroup = state.groups.find(
+        (g) => g._id === action.payload.oldGroupId
+      );
+      const prevGroupTasks = prevGroup.tasks.filter(
+        (t) => t._id !== action.payload.oldTaskId
+      );
+      const updatedPrevGroup = { ...prevGroup, tasks: prevGroupTasks };
+
+      // add new
+      const nextGroup = state.groups.find(
+        (g) => g._id === action.payload.newGroupId
+      );
+      const nextGroupTasks = [...nextGroup.tasks, action.payload.newTask];
+      const updatedNextGroup = { ...nextGroup, tasks: nextGroupTasks };
+
+      const groups = state.groups.map((g) => {
+        if (g._id === updatedPrevGroup._id) return updatedPrevGroup;
+        if (g._id === updatedNextGroup._id) return updatedNextGroup;
+        return g;
+      });
+
+      return { ...state, groups, status: "succeeded" };
+    });
+    builder.addCase(moveTask.rejected, (state, action) => {
       return { ...state, status: "failed", error: action.error.message };
     });
   },

@@ -1,6 +1,6 @@
 // /api/v1/projects/:projectId
-import dbConnect from "../../../../../lib/dbConnect";
-import Project from "../../../../../models/project";
+import dbConnect from "lib/dbConnect";
+import Project from "models/project";
 
 async function handler(req, res) {
   const {

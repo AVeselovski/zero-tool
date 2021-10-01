@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { setProjects } from "../../features/projects/projectsSlice";
+import { setProjects } from "@features/projects/projectsSlice";
 
-import dbConnect from "../../lib/dbConnect";
-import Project from "../../models/project";
+import dbConnect from "lib/dbConnect";
+import Project from "models/project";
 
 /**
  * Lists available projects for starters...

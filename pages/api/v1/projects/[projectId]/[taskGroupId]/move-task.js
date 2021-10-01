@@ -1,4 +1,4 @@
-// /api/v1/projects/:projectId/new-group
+// /api/v1/projects/:projectId/:taskGroupId
 import mongoose from "mongoose";
 
 import dbConnect from "lib/dbConnect";
@@ -15,7 +15,7 @@ function handleError(error, res) {
 
 async function handler(req, res) {
   const {
-    query: { projectId },
+    query: { projectId, taskGroupId },
     method,
   } = req;
 
@@ -24,18 +24,34 @@ async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
+        const { nextGroupId, taskId } = req.body;
+
         // get document
         const project = await Project.findById(projectId);
 
         // manipulate subdocuments
+        const currentGroup = project.taskGroups.id(taskGroupId);
+        const task = currentGroup.tasks.id(taskId);
+        const duplicateTask = { title: task.title, body: task.body };
+
+        // push to new group
+        const nextGroup = project.taskGroups.id(nextGroupId);
         const id = mongoose.Types.ObjectId();
-        project.taskGroups.push({ ...req.body, _id: id });
-        const newTaskGroup = project.taskGroups.find((g) => g._id === id);
+        nextGroup.tasks.push({
+          ...duplicateTask,
+          _id: id,
+          _groupId: nextGroupId,
+        });
+
+        // remove from old group
+        currentGroup.tasks.id(task._id).remove();
+
+        const movedTask = nextGroup.tasks.find((t) => t._id === id);
 
         // save document
         try {
           await project.save();
-          res.status(201).json({ success: true, data: newTaskGroup });
+          res.status(201).json({ success: true, data: movedTask });
         } catch (error) {
           handleError(error, res);
         }
