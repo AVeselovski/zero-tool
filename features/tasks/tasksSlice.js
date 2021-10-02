@@ -8,7 +8,17 @@ const initialState = {
   error: null,
 };
 
-// add new task list (group)
+// fetch projects task groups
+export const getProjectData = createAsyncThunk(
+  "tasks/getProjectData",
+  async (projectId) => {
+    const response = await api.get(`projects/${projectId}`);
+
+    return response.data;
+  }
+);
+
+// add new task list/column (group)
 export const addTaskGroup = createAsyncThunk(
   "tasks/addTaskGroup",
   async (group, { getState }) => {
@@ -19,7 +29,7 @@ export const addTaskGroup = createAsyncThunk(
   }
 );
 
-// update a task list (group)
+// update task list/column (group)
 export const updateTaskGroup = createAsyncThunk(
   "tasks/updateTaskGroup",
   async (group, { getState }) => {
@@ -30,7 +40,7 @@ export const updateTaskGroup = createAsyncThunk(
   }
 );
 
-// remove a task list (group) from state
+// remove task list/column (group)
 export const removeTaskGroup = createAsyncThunk(
   "tasks/removeTaskGroup",
   async (groupId, { getState }) => {
@@ -41,7 +51,7 @@ export const removeTaskGroup = createAsyncThunk(
   }
 );
 
-// add a task to specific list (group)
+// add task to list/column (group)
 export const addTask = createAsyncThunk(
   "tasks/addTask",
   async ({ groupId, task }, { getState }) => {
@@ -52,7 +62,7 @@ export const addTask = createAsyncThunk(
   }
 );
 
-// update a task
+// update task
 export const updateTask = createAsyncThunk(
   "tasks/updateTask",
   async (task, { getState }) => {
@@ -66,7 +76,7 @@ export const updateTask = createAsyncThunk(
   }
 );
 
-// remove a task from list (group)
+// remove task from list/column (group)
 export const removeTask = createAsyncThunk(
   "tasks/removeTask",
   async ({ groupId, taskId }, { getState }) => {
@@ -79,6 +89,7 @@ export const removeTask = createAsyncThunk(
   }
 );
 
+// move task to next list/column (group)
 export const moveTask = createAsyncThunk(
   "tasks/moveTask",
   async ({ currentPosition, taskId }, { getState, rejectWithValue }) => {
@@ -109,16 +120,22 @@ export const moveTask = createAsyncThunk(
 const slice = createSlice({
   name: "tasks",
   initialState,
-  reducers: {
-    // populate task lists (groups)
-    setTaskGroups: (state, action) => {
-      const groups = action.payload.map((g, i) => ({ ...g, position: i + 1 }));
+  reducers: {},
+  extraReducers(builder) {
+    // handle GET groups
+    builder.addCase(getProjectData.fulfilled, (state, action) => {
+      const groups = action.payload.taskGroups.map((g, i) => ({
+        ...g,
+        position: i + 1,
+      }));
 
       return { ...state, groups };
-    },
-  },
-  extraReducers(builder) {
-    // handle post group results
+    });
+    builder.addCase(getProjectData.rejected, (state, action) => {
+      return { ...state, status: "failed", error: action.error.message };
+    });
+
+    // handle POST group results
     builder.addCase(addTaskGroup.fulfilled, (state, action) => {
       const groupsLength = state.groups.length;
       const newGroup = { ...action.payload, position: groupsLength + 1 };
@@ -130,7 +147,7 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle put group results
+    // handle PUT group results
     builder.addCase(updateTaskGroup.fulfilled, (state, action) => {
       const groups = state.groups.map((g) =>
         g._id === action.payload._id ? action.payload : g
@@ -142,7 +159,7 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle delete group results
+    // handle DELETE group results
     builder.addCase(removeTaskGroup.fulfilled, (state, action) => {
       const groups = state.groups.filter((t) => t._id !== action.payload);
 
@@ -152,7 +169,7 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle post task results
+    // handle POST task results
     builder.addCase(addTask.fulfilled, (state, action) => {
       const group = state.groups.find((g) => g._id === action.payload.groupId);
       const tasks = [...group.tasks, action.payload.task];
@@ -167,7 +184,7 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle put task results
+    // handle PUT task results
     builder.addCase(updateTask.fulfilled, (state, action) => {
       const group = state.groups.find((g) => g._id === action.payload._groupId);
       const tasks = group.tasks.map((t) =>
@@ -184,7 +201,7 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle delete task results
+    // handle DELETE task results
     builder.addCase(removeTask.fulfilled, (state, action) => {
       const group = state.groups.find((g) => g._id === action.payload.groupId);
       const tasks = group.tasks.filter((t) => t._id !== action.payload.taskId);
@@ -199,7 +216,7 @@ const slice = createSlice({
       return { ...state, status: "failed", error: action.error.message };
     });
 
-    // handle post task results
+    // handle move task (POST) results
     builder.addCase(moveTask.fulfilled, (state, action) => {
       // remove old
       const prevGroup = state.groups.find(

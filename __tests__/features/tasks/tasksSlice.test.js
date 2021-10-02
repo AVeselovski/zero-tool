@@ -11,17 +11,17 @@ describe("Reducers - tasks slice", () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
 
-  test("should handle task groups being added and decorated with 'position'", () => {
-    const groups = [{ title: "Group A" }, { title: "Group B" }];
-    const expected = [
-      { title: "Group A", position: 1 },
-      { title: "Group B", position: 2 },
-    ];
+  // test("should handle task groups being added and decorated with 'position'", () => {
+  //   const groups = [{ title: "Group A" }, { title: "Group B" }];
+  //   const expected = [
+  //     { title: "Group A", position: 1 },
+  //     { title: "Group B", position: 2 },
+  //   ];
 
-    expect(reducer(undefined, setTaskGroups(groups))).toEqual({
-      groups: [...expected],
-      status: "idle",
-      error: null,
-    });
-  });
+  //   expect(reducer(undefined, setTaskGroups(groups))).toEqual({
+  //     groups: [...expected],
+  //     status: "idle",
+  //     error: null,
+  //   });
+  // });
 });

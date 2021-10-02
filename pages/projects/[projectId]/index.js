@@ -1,54 +1,58 @@
 // zero-tool.com/projects/:projectId
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { getProjectData, selectTaskGroups } from "@features/tasks/tasksSlice";
 import {
-  useGetAllProjectsQuery,
-  // useGetProjectByIdQuery,
-  useLazyGetProjectByIdQuery,
-} from "@services/zeroApi";
-import {
-  setProjects,
+  getAllProjects,
   setActiveProject,
 } from "@features/projects/projectsSlice";
-import { setTaskGroups, selectTaskGroups } from "@features/tasks/tasksSlice";
 
 import TaskGroup from "@components/tasks/TaskGroup";
 import NewGroup from "@components/tasks/NewGroup";
-// import Loader from "@components/ui/Loader";
+import Loader from "@components/ui/Loader";
 
-export default function ProjectPage(props) {
+export default function ProjectPage() {
+  const [isFetching, setIsFetching] = useState(true);
+
   const router = useRouter();
   const queryId = router.query.projectId;
 
   const groups = useSelector(selectTaskGroups);
   const dispatch = useDispatch();
 
-  const allProjects = useGetAllProjectsQuery();
-  const [getProjectById, project] = useLazyGetProjectByIdQuery();
-
-  // set all available projects listing
+  // get project data on project query change
   useEffect(() => {
-    if (allProjects.data) {
-      dispatch(setProjects(allProjects.data));
+    async function _getProjectData() {
+      try {
+        setIsFetching(true);
+        await dispatch(getProjectData(queryId)).unwrap();
+      } catch (error) {
+        console.error("Failed to fetch project data:", error);
+      } finally {
+        setIsFetching(false);
+      }
     }
-  }, [allProjects, dispatch]);
 
-  // get project on project query change
-  useEffect(() => {
     if (queryId) {
-      getProjectById(queryId);
+      _getProjectData(queryId);
       dispatch(setActiveProject(queryId));
     }
-  }, [queryId, getProjectById, dispatch]);
+  }, [queryId, dispatch]);
 
-  // set project tasks data
+  // refetch all available projects
   useEffect(() => {
-    if (!project.isFetching && project.data) {
-      dispatch(setTaskGroups(project.data.taskGroups));
+    async function _getAllProjects() {
+      try {
+        await dispatch(getAllProjects()).unwrap();
+      } catch (error) {
+        console.error("Failed to fetch all projects:", error);
+      }
     }
-  }, [project, dispatch]);
+
+    _getAllProjects();
+  }, [dispatch]);
 
   return (
     <div className="container-fluid x-scroll">
@@ -62,9 +66,12 @@ export default function ProjectPage(props) {
           ))}
 
           {/** TODO: do not render while fetching */}
-          <div className="column">
-            <NewGroup />
-          </div>
+          {!isFetching && (
+            <div className="column">
+              <NewGroup />
+            </div>
+          )}
+          {isFetching && <Loader />}
         </div>
       </div>
     </div>

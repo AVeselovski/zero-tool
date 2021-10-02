@@ -45,7 +45,7 @@ async function api(endpoint, method = "GET", body = undefined) {
     console.error(error);
     const errorMsg = error.message ? error.message : data;
 
-    return Promise.reject({ error: `${errorMsg} - 500` });
+    return Promise.reject(`500 - ${errorMsg}`);
   }
 }
 

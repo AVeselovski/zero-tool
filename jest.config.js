@@ -1,4 +1,6 @@
 module.exports = {
+  automock: false, // ???
+  collectCoverage: true,
   collectCoverageFrom: [
     "**/*.{js,jsx,ts,tsx}",
     "!**/*.d.ts",
@@ -20,10 +22,14 @@ module.exports = {
     "^@features/(.*)$": "<rootDir>/features/$1",
     "^@pages/(.*)$": "<rootDir>/pages/$1",
     "^@services/(.*)$": "<rootDir>/services/$1",
+
+    "^@mocks/(.*)$": "<rootDir>/__mocks__/$1",
+    "^@tests/(.*)$": "<rootDir>/__tests__/$1",
   },
+  resetMocks: true,
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
-  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   testEnvironment: "jsdom",
+  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
   transform: {
     /* Use babel-jest to transpile tests with the next/babel preset
     https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object */
@@ -33,4 +39,5 @@ module.exports = {
     "/node_modules/",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
+  verbose: true,
 };

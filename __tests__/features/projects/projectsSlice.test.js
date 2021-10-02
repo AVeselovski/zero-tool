@@ -1,11 +1,12 @@
 import reducer, {
-  setProjects,
   setActiveProject,
 } from "../../../features/projects/projectsSlice";
 
 const initialState = {
   projects: [],
   activeProject: "",
+  status: "idle",
+  error: null,
 };
 
 describe("Reducers - projects slice", () => {
@@ -13,14 +14,14 @@ describe("Reducers - projects slice", () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
 
-  test("should handle projects being added", () => {
-    const projects = [{ title: "Project A" }];
+  // test("should handle projects being added", () => {
+  //   const projects = [{ title: "Project A" }];
 
-    expect(reducer(undefined, setProjects(projects))).toEqual({
-      projects: [...projects],
-      activeProject: "",
-    });
-  });
+  //   expect(reducer(undefined, setProjects(projects))).toEqual({
+  //     projects: [...projects],
+  //     activeProject: "",
+  //   });
+  // });
 
   test("should handle setting active project", () => {
     const project = "123456789";
@@ -28,6 +29,8 @@ describe("Reducers - projects slice", () => {
     expect(reducer(undefined, setActiveProject(project))).toEqual({
       projects: [],
       activeProject: project,
+      status: "idle",
+      error: null,
     });
   });
 });
