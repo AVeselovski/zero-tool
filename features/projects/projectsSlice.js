@@ -23,6 +23,15 @@ const slice = createSlice({
   name: "projects",
   initialState,
   reducers: {
+    // set projects (just in case for now)
+    setProjects: (state, action) => {
+      const projects = action.payload.map((p) => ({
+        _id: p._id.toString(),
+        title: p.title,
+      }));
+
+      return { ...state, projects };
+    },
     // set active project (should be persisted in local storage)
     setActiveProject: (state, action) => {
       return { ...state, activeProject: action.payload };
@@ -40,7 +49,7 @@ const slice = createSlice({
 });
 
 // Actions
-export const { setActiveProject } = slice.actions;
+export const { setProjects, setActiveProject } = slice.actions;
 
 // Selectors
 export const selectProjects = (state) => state.projects.projects;

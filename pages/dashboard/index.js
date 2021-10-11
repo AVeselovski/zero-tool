@@ -1,13 +1,10 @@
 // zero-tool.com/dashboard
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+// import { useEffect } from "react";
+// import { useDispatch } from "react-redux";
 
-import { setProjects } from "@features/projects/projectsSlice";
-
-import dbConnect from "lib/dbConnect";
-import Project from "models/project";
+// import { setProjects } from "@features/projects/projectsSlice";
 
 /**
  * Lists available projects for starters...
@@ -16,14 +13,13 @@ import Project from "models/project";
  * - Project links to /projects/:id
  * - /projects route should redirect to /dashboard
  */
-
 export default function DashboardPage({ projects }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   /** ?! Not sure if necessary */
-  useEffect(() => {
-    dispatch(setProjects(projects));
-  }, [projects, dispatch]);
+  // useEffect(() => {
+  //   dispatch(setProjects(projects));
+  // }, [projects, dispatch]);
   /** ?! */
 
   return (
@@ -44,6 +40,9 @@ export default function DashboardPage({ projects }) {
     </>
   );
 }
+
+import dbConnect from "lib/dbConnect";
+import Project from "models/project";
 
 export async function getStaticProps() {
   await dbConnect();
