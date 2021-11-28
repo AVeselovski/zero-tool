@@ -2,6 +2,8 @@
 import Link from "next/link";
 import Head from "next/head";
 
+import Container from "@components/ui/Container";
+
 /**
  * Landing page with flashy logo / animation.
  *
@@ -16,10 +18,10 @@ export default function HomePage() {
         <title>Zero Tool</title>
         <meta name="description" content="Description of this thing..." />
       </Head>
-      <div className="container">
+      <Container>
         <h1>Home page</h1>
         <Link href="/dashboard">Dashboard</Link>
-      </div>
+      </Container>
     </>
   );
 }

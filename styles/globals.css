@@ -1,0 +1,230 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  @apply text-gray-700 text-base font-light;
+
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/** Elements **/
+
+h1 {
+  font-size: 2.25rem /* 36px */;
+  font-weight: 400;
+  line-height: 1.2;
+}
+h2 {
+  font-size: 1.875rem /* 30px */;
+  /* font-weight: 400; */
+  /* line-height: 1.2; */
+}
+h2,
+h3,
+h4 {
+  font-size: 1.25rem /* 20px */;
+  font-weight: 500;
+  line-height: 1.2;
+}
+h5,
+h6 {
+  font-size: 1rem /* 16px */;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+ul {
+  @apply pl-6;
+}
+
+/** Links **/
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/** Buttons **/
+
+button {
+  @apply p-0;
+  @apply bg-transparent rounded;
+
+  cursor: pointer;
+  outline: none;
+}
+button * {
+  display: block;
+}
+button:hover:not(:disabled),
+button:active:not(:disabled),
+button:focus {
+  @apply bg-gray-200;
+}
+button.button:disabled {
+  opacity: 0.5;
+}
+
+.button {
+  @apply px-4 py-2;
+  @apply bg-transparent rounded font-normal;
+
+  font-size: 1rem /* 16px */;
+  line-height: 1;
+}
+
+.button * {
+  display: block;
+}
+
+.button.small {
+  @apply px-2 py-1;
+  @apply font-normal;
+
+  font-size: 0.875rem /* 14px */;
+}
+.button.medium {
+  @apply px-4 py-2;
+  @apply font-normal;
+
+  font-size: 1rem /* 16px */;
+}
+.button.big {
+  @apply px-6 py-3;
+  @apply font-normal;
+
+  font-size: 1.125rem /* 18px */;
+}
+
+.button.icon {
+  @apply p-1;
+  @apply border-none rounded;
+
+  font-size: 1.25rem /* 20px */;
+}
+
+.button.icon.naked {
+  padding: 0;
+}
+.button.icon.naked:hover,
+.button.icon.naked:active {
+  background-color: transparent;
+}
+
+.button.round {
+  @apply rounded-full;
+}
+
+a.button {
+  @apply px-4 py-2;
+  @apply font-normal text-gray-700 rounded;
+
+  font-size: 0.875rem /* 14px */;
+  text-decoration: none;
+}
+
+.button.primary {
+  @apply bg-gray-700 hover:bg-gray-900 text-white;
+}
+
+/** Inputs **/
+
+input[type="date"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+textarea,
+select,
+.input {
+  @apply w-full px-3 py-1;
+  @apply border border-gray-200 rounded;
+
+  font-size: 0.875rem /* 14px */;
+  height: 2rem;
+  line-height: 1;
+  min-width: 10rem;
+  outline: none;
+}
+select.input {
+  @apply px-2;
+}
+.input::placeholder {
+  @apply text-gray-500;
+
+  opacity: 1; /* Firefox */
+}
+.input:focus {
+  @apply border border-gray-700;
+
+  outline: none;
+}
+.input.wide {
+  min-width: 15rem;
+}
+.input.big {
+  @apply px-3 py-1;
+
+  font-size: 1rem /* 16px */;
+  height: 2.5rem;
+}
+
+textarea {
+  display: block;
+  height: auto;
+  line-height: 1.25;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  resize: vertical;
+}
+textarea.input.big {
+  @apply px-3 py-2;
+
+  height: auto;
+  font-size: 1rem /* 16px */;
+  min-height: 4rem;
+}
+
+.input-group {
+  @apply mb-2;
+}
+.input-group label {
+  @apply inline-block mb-1;
+  @apply font-normal;
+
+  font-size: 0.875rem /* 14px */;
+}
+.input-group input,
+.input-group textarea {
+  @apply block w-full;
+}
+
+/** Random **/
+
+/* Nice... */
+::selection {
+  @apply bg-indigo-500 text-white;
+}

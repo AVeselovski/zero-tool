@@ -1,0 +1,17 @@
+.notFound {
+  @apply flex items-center justify-center;
+
+  height: calc(100vh - 8rem);
+}
+.notFound > h1 {
+  @apply inline-block m-0 px-6 py-3;
+  @apply border-r border-gray-300 font-medium text-red-500;
+
+  font-size: 1.5rem /* 24px */;
+  vertical-align: top;
+}
+.notFound .message {
+  @apply inline-block px-6 py-3;
+
+  vertical-align: middle;
+}

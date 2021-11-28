@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 import { useClickOutside } from "@components/utils/hooks";
-import styles from "./dropdown.module.scss";
+import styles from "./dropdown.module.css";
 
 function DdList({ children }) {
   return (

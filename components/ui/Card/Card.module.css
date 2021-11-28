@@ -1,0 +1,64 @@
+.card {
+  @apply mb-2;
+  @apply bg-white border border-gray-200 rounded;
+}
+
+.cardHeader {
+  @apply flex items-start justify-between;
+  @apply p-2;
+  @apply rounded-t border-b;
+
+  cursor: grab;
+}
+
+.cardHeaderTitle {
+  @apply flex items-start;
+  @apply pt-1;
+  @apply font-normal;
+}
+.cardHeaderTitle :first-child {
+  @apply -ml-1.5 mr-1;
+  @apply text-gray-300;
+}
+
+.cardBody {
+  @apply p-2;
+
+  line-height: 1.25;
+}
+
+.cardFooter {
+  @apply p-2;
+}
+
+.cardActions {
+  @apply flex items-center justify-end;
+  @apply pt-4;
+}
+
+.cardGroup {
+  @apply p-2;
+  @apply bg-gray-50;
+
+  height: 100%;
+}
+
+.cardGroup > .cardHeader {
+  @apply items-center;
+  @apply mb-3 p-0;
+  @apply border-none;
+
+  height: 2rem;
+}
+
+.cardGroup > .cardHeader .cardHeaderTitle {
+  @apply pt-0;
+}
+
+.cardGroup > .cardHeader form {
+  flex-grow: 1;
+  margin-right: 0.5rem;
+}
+.cardGroup > .cardHeader form input {
+  min-width: 100%;
+}

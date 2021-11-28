@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { removeTask, moveTask } from "@features/tasks/tasksSlice";
 
+import Card from "@components/ui/Card";
 import GroupHeader from "./GroupHeader";
 import Task from "./Task";
 import TaskModal from "./TaskModal";
@@ -50,7 +51,7 @@ const TaskGroup = ({ group }) => {
 
   return (
     <>
-      <div className="card-group">
+      <Card isGroup>
         <GroupHeader groupId={group._id} title={group.title} />
 
         <div>
@@ -65,13 +66,13 @@ const TaskGroup = ({ group }) => {
             />
           ))}
           <button
-            className="button column-button"
+            className="button round w-full h-10"
             onClick={() => setIsOpen(true)}
           >
-            + Add task
+            + Add card
           </button>
         </div>
-      </div>
+      </Card>
 
       <TaskModal
         isOpen={isOpen}

@@ -61,6 +61,7 @@ const TaskModal = ({
           <div className="input-group">
             <label htmlFor="title">Title</label>
             <input
+              className="input"
               defaultValue={task ? task.title : ""}
               disabled={isSubmitting}
               id="title"
@@ -72,6 +73,7 @@ const TaskModal = ({
           <div className="input-group">
             <label htmlFor="body">Body</label>
             <textarea
+              className="input big h-24"
               defaultValue={task ? task.body : ""}
               disabled={isSubmitting}
               id="body"
@@ -89,9 +91,9 @@ const TaskModal = ({
         >
           Close
         </button>
-        {isSubmitting && <Loader className="ml-2/4" />}
+        {!isSubmitting && <Loader className="ml-2" />}
         <button
-          className="button primary ml-2/4"
+          className="button primary ml-2"
           disabled={isSubmitting}
           form="task-form"
         >

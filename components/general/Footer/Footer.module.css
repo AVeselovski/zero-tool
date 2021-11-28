@@ -1,0 +1,10 @@
+.footer {
+  @apply flex items-center justify-center;
+  @apply mx-4 my-0 md:mx-8;
+  @apply text-center border-t;
+
+  height: 4rem;
+}
+.footer a {
+  @apply text-blue-500;
+}

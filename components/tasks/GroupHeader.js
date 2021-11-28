@@ -3,12 +3,16 @@ import { useDispatch } from "react-redux";
 
 import { removeTaskGroup, updateTaskGroup } from "@features/tasks/tasksSlice";
 
+import styles from "../ui/Card/Card.module.css";
+import Card from "@components/ui/Card";
 import Dropdown from "@components/ui/Dropdown";
 import Loader from "@components/ui/Loader";
+import DraggableIcon from "@components/icons/DraggableIcon";
 
 export default function GroupHeader({ groupId = "", title = "" }) {
   const [showForm, setShowForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -40,7 +44,7 @@ export default function GroupHeader({ groupId = "", title = "" }) {
 
   async function handleDeleteTaskGroup() {
     try {
-      setIsSubmitting(true);
+      setIsDeleting(true);
       await dispatch(removeTaskGroup(groupId)).unwrap();
     } catch (error) {
       console.error("Failed to delete task group:", error);
@@ -48,22 +52,22 @@ export default function GroupHeader({ groupId = "", title = "" }) {
   }
 
   return (
-    <div className="card-group-header">
+    <Card.Header>
       {isSubmitting && <Loader />}
 
       {!showForm && (
-        <div className="card-group-title">
-          <ion-icon name="swap-horizontal"></ion-icon>
-          <span className="title" onClick={toggleForm}>
+        <Card.HeaderTitle>
+          <DraggableIcon />
+          <strong className="cursor-pointer" onClick={toggleForm}>
             {title}
-          </span>
-        </div>
+          </strong>
+        </Card.HeaderTitle>
       )}
       {showForm && !isSubmitting && (
-        <form className="card-group-form" onSubmit={submitHandler}>
+        <form onSubmit={submitHandler}>
           <input
             autoFocus
-            className=""
+            className="input"
             defaultValue={title}
             onBlur={toggleForm}
             placeholder="Task list title..."
@@ -79,19 +83,15 @@ export default function GroupHeader({ groupId = "", title = "" }) {
         toggleContent={<ion-icon name="ellipsis-vertical"></ion-icon>}
       >
         <Dropdown.List>
-          <button
-            className="button"
-            disabled={isSubmitting}
-            onClick={toggleForm}
-          >
+          <button disabled={isSubmitting || isDeleting} onClick={toggleForm}>
             <ion-icon name="create-outline"></ion-icon> Edit column
           </button>
           <button
-            className="button danger"
-            disabled={isSubmitting}
+            className="text-red-500"
+            disabled={isSubmitting || isDeleting}
             onClick={handleDeleteTaskGroup}
           >
-            {isSubmitting ? (
+            {isSubmitting || isDeleting ? (
               <>
                 <Loader isMini /> Delete column
               </>
@@ -103,6 +103,6 @@ export default function GroupHeader({ groupId = "", title = "" }) {
           </button>
         </Dropdown.List>
       </Dropdown>
-    </div>
+    </Card.Header>
   );
 }

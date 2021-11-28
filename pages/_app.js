@@ -4,9 +4,9 @@ import { Provider as ReduxProvider } from "react-redux";
 import { StoreProvider as ContextProvider } from "app/contextStore";
 import { store } from "app/store";
 
+import "styles/normalize.css";
 import "styles/globals.css";
-import "styles/app.scss";
-import Layout from "@components/ui/Layout";
+import Layout from "@components/Layout";
 
 export default function Application({ Component, pageProps }) {
   return (

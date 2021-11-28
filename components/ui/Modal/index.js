@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import "wicg-inert";
 
+import styles from "./Modal.module.css";
 import Portal from "@components/utils/Portal";
-import styles from "./modal.module.scss";
 
 const modalSizes = {
   small: "20rem",
@@ -13,7 +13,7 @@ const modalSizes = {
 function Header({ children, onClose = null }) {
   return (
     <div className={styles.modalHeader}>
-      <div>{children}</div>
+      <h2>{children}</h2>
       {onClose && (
         <button className="button icon round" onClick={onClose}>
           <ion-icon name="close-outline"></ion-icon>

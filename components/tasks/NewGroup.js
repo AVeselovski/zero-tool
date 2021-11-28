@@ -44,7 +44,7 @@ const NewGroup = () => {
         <form onSubmit={submitHandler}>
           <input
             autoFocus
-            className="big"
+            className="input big"
             onBlur={toggleForm}
             placeholder="Task list title..."
             ref={titleInputRef}
@@ -54,7 +54,7 @@ const NewGroup = () => {
       )}
 
       {!showForm && !isSubmitting && (
-        <button className="button column-button" onClick={toggleForm}>
+        <button className="button" onClick={toggleForm}>
           + Add column
         </button>
       )}

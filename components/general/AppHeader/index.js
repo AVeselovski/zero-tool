@@ -2,6 +2,13 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 
+import styles from "./AppHeader.module.css";
+
+import MenuIcon from "@components/icons/MenuIcon";
+import SettingsIcon from "@components/icons/SettingsIcon";
+import SearchIcon from "@components/icons/SearchIcon";
+import UserIcon from "@components/icons/UserIcon";
+
 import {
   setActiveProject,
   selectProjects,
@@ -21,12 +28,12 @@ function Header() {
   };
 
   return (
-    <header className="app-header">
-      <div className="app-header-left">
-        <button className="button icon round big app-header-handle">
-          <ion-icon name="menu"></ion-icon>
+    <header className={styles.appHeader}>
+      <div className={styles.appHeaderLeft}>
+        <button className={`${styles.appHeaderHandle} button icon round p-2`}>
+          <MenuIcon />
         </button>
-        <h1 className="app-header-brand">
+        <h1 className={styles.appHeaderBrand}>
           <Link href="/dashboard">Zero Tool</Link>
         </h1>
         {/* 
@@ -34,8 +41,9 @@ function Header() {
           <Link href="/events">Events</Link>
         </h2> 
         */}
-        <div className="app-header-actions">
+        <div className={styles.appHeaderActions}>
           <select
+            className="input"
             onChange={(e) => setProject(e.target.value)}
             value={activeProject}
           >
@@ -48,33 +56,21 @@ function Header() {
               </option>
             ))}
           </select>
-          <button className="button icon big ml-1/4">
-            <ion-icon name="settings"></ion-icon>
+          <button className="button icon ml-1">
+            <SettingsIcon />
           </button>
-          <div className="search-input-group ml-2">
-            <input className="wide" placeholder="Search..." type="text" />
+          <div className={styles.appHeaderSearch}>
+            <input className="input wide" placeholder="Search..." type="text" />
             <button>
-              <ion-icon name="search-outline"></ion-icon>
+              <SearchIcon />
             </button>
           </div>
         </div>
       </div>
-      <div className="app-header-right">
-        {/* 
-        <nav className="app-header-nav">
-          <ul>
-            <li>
-              <Link href="/events">All Events</Link>
-            </li>
-            <li>
-              <Link href="/events/new">Add New Event</Link>
-            </li>
-          </ul>
-        </nav>
-        */}
-        <div className="app-header-actions">
-          <button className="button icon round giant naked ml-1">
-            <ion-icon name="person-circle-outline"></ion-icon>
+      <div className={styles.appHeaderRight}>
+        <div className={styles.appHeaderActions}>
+          <button className="button icon round ml-1 p-2">
+            <UserIcon />
           </button>
         </div>
       </div>

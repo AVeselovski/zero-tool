@@ -1,0 +1,100 @@
+.appHeader {
+  @apply fixed w-full;
+  @apply border-b border-gray-200;
+
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  height: 4rem;
+  z-index: 1;
+}
+
+.appHeaderLeft {
+  @apply flex justify-self-start self-center items-center;
+  @apply pl-4 md:pl-6;
+  @apply text-left;
+
+  grid-column-start: 1;
+  pointer-events: auto;
+}
+
+.appHeaderRight {
+  @apply flex justify-self-end self-center items-center;
+  @apply pr-4 md:pr-6;
+  @apply text-right;
+
+  grid-column-start: 2;
+  pointer-events: auto;
+}
+
+.appHeaderHandle {
+  @apply mr-4;
+}
+
+.appHeaderBrand {
+  @apply mr-2;
+  @apply text-xl font-medium text-gray-700;
+
+  white-space: nowrap;
+}
+.appHeaderBrand a {
+  text-decoration: none;
+}
+.appHeaderBrand span {
+  @apply font-extralight;
+}
+
+.appHeaderSubBrand {
+  @apply mx-2;
+  @apply text-xl font-medium text-gray-700;
+
+  position: relative;
+  white-space: nowrap;
+}
+.appHeaderSubBrand::before {
+  @apply absolute -left-3;
+  @apply font-light;
+
+  content: "/";
+}
+
+.appHeaderActions {
+  @apply flex items-center;
+  @apply ml-4;
+}
+
+.appHeaderNav {
+  @apply flex items-center;
+}
+.appHeaderNav ul {
+  @apply m-0 p-0;
+
+  display: none;
+  list-style: none;
+}
+.appHeaderNav li a {
+  @apply mx-1 px-4 py-2;
+  @apply text-sm font-normal text-gray-700 rounded-full;
+
+  text-decoration: none;
+}
+.appHeaderNav li a:hover,
+.appHeaderNav li a:active {
+  @apply bg-gray-200 text-black;
+}
+.appHeaderNav li .active {
+  @apply bg-gray-200 text-black;
+}
+
+.appHeaderSearch {
+  @apply flex items-center;
+  @apply ml-8;
+}
+.appHeaderSearch > input[type="text"] {
+  @apply rounded-tr-none rounded-br-none;
+}
+.appHeaderSearch > button {
+  @apply p-1;
+  @apply bg-gray-200 border-none rounded-none rounded-tr rounded-br;
+}

@@ -9,6 +9,8 @@ import {
   setActiveProject,
 } from "@features/projects/projectsSlice";
 
+import Container from "@components/ui/Container";
+import Columns from "@components/general/Columns";
 import TaskGroup from "@components/tasks/TaskGroup";
 import NewGroup from "@components/tasks/NewGroup";
 import Loader from "@components/ui/Loader";
@@ -55,25 +57,24 @@ export default function ProjectPage() {
   }, [dispatch]);
 
   return (
-    <div className="container-fluid x-scroll">
-      <div className="columns-container">
-        <div className="columns">
-          {/** TODO: render skeleton loaders while fetching */}
-          {groups.map((group) => (
-            <div className="column" key={group._id}>
-              <TaskGroup group={group} />
-            </div>
-          ))}
+    <Container isFluid isScrollable>
+      <Columns>
+        {/** TODO: render skeleton loaders while fetching */}
+        {groups.map((group) => (
+          <Columns.Col key={group._id}>
+            <TaskGroup group={group} />
+          </Columns.Col>
+        ))}
 
-          {/** TODO: do not render while fetching */}
-          {!isFetching && (
-            <div className="column">
-              <NewGroup />
-            </div>
-          )}
-          {isFetching && <Loader />}
-        </div>
-      </div>
-    </div>
+        {/** TODO: do not render while fetching */}
+        {!isFetching && (
+          <Columns.Col>
+            <NewGroup />
+          </Columns.Col>
+        )}
+
+        {isFetching && <Loader />}
+      </Columns>
+    </Container>
   );
 }

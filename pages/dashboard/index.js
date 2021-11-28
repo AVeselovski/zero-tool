@@ -6,6 +6,8 @@ import Link from "next/link";
 
 // import { setProjects } from "@features/projects/projectsSlice";
 
+import Container from "@components/ui/Container";
+
 /**
  * Lists available projects for starters...
  *
@@ -28,7 +30,7 @@ export default function DashboardPage({ projects }) {
         <title>Dashboard | Zero Tool</title>
         <meta name="description" content="Description of this thing..." />
       </Head>
-      <div className="container-fluid">
+      <Container isFluid>
         {!projects.length && "Loading..."}
 
         {projects.map((p) => (
@@ -36,7 +38,7 @@ export default function DashboardPage({ projects }) {
             <Link href={`/projects/${p._id}`}>{p.title}</Link>
           </div>
         ))}
-      </div>
+      </Container>
     </>
   );
 }
