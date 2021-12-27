@@ -5,13 +5,10 @@ import { RootState } from "app/store";
 
 import type { IProject } from "../../types";
 
-export const getAllProjects = createAsyncThunk(
-  "tasks/getAllProjects",
-  async () => {
-    const response = await api.get(`projects`);
-    return response.data;
-  }
-);
+export const getAllProjects = createAsyncThunk("tasks/getAllProjects", async () => {
+  const response = await api.get(`projects`);
+  return response.data;
+});
 
 export interface ProjectsState {
   projects: IProject[];
@@ -60,7 +57,9 @@ export const { setActiveProject } = slice.actions;
 
 // Selectors
 export const selectProjects = (state: RootState) => state.projects.projects;
+export const selectMappedProjects = (state: RootState) =>
+  state.projects.projects.map((p) => ({ label: p.title, value: p._id }));
 export const selectActiveProject = (state: RootState) =>
-  state.projects.activeProject;
+  state.projects.projects.find((p) => p._id === state.projects.activeProject);
 
 export default slice.reducer;

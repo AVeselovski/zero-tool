@@ -164,9 +164,9 @@ select,
   @apply border border-gray-200 rounded;
 
   font-size: 0.875rem /* 14px */;
-  height: 2rem;
+  height: 2rem /* 32px */;
   line-height: 1;
-  min-width: 10rem;
+  min-width: 10rem /* 160px */;
   outline: none;
 }
 select.input {
@@ -183,21 +183,21 @@ select.input {
   outline: none;
 }
 .input.wide {
-  min-width: 15rem;
+  min-width: 15rem /* 240px */;
 }
 .input.big {
   @apply px-3 py-1;
 
   font-size: 1rem /* 16px */;
-  height: 2.5rem;
+  height: 2.5rem /* 40px */;
 }
 
 textarea {
   display: block;
   height: auto;
   line-height: 1.25;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
+  padding-bottom: 1rem /* 16px */;
+  padding-top: 1rem /* 16px */;
   resize: vertical;
 }
 textarea.input.big {
@@ -205,7 +205,7 @@ textarea.input.big {
 
   height: auto;
   font-size: 1rem /* 16px */;
-  min-height: 4rem;
+  min-height: 4rem /* 64px */;
 }
 
 .input-group {

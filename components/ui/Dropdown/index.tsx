@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import styles from "./dropdown.module.css";
+import styles from "./Dropdown.module.css";
 import { useClickOutside } from "components/utils/hooks";
 import EllipsisHIcon from "components/icons/EllipsisHIcon";
 
@@ -39,7 +39,7 @@ function Dropdown({
   };
 
   function handleClick() {
-    setIsActive(!isActive);
+    setIsActive((prevState) => !prevState);
   }
 
   return (

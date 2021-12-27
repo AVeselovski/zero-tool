@@ -1,8 +1,8 @@
 import { Provider as ReduxProvider } from "react-redux";
 import { AppProps } from "next/app";
 
-import { StoreProvider as ContextProvider } from "app/contextStore";
 import { store } from "app/store";
+import { UiContextProvider } from "app/ui-store";
 
 import "styles/normalize.css";
 import "styles/globals.css";
@@ -12,11 +12,11 @@ export default function Application({ Component, pageProps }: AppProps) {
   return (
     <>
       <ReduxProvider store={store}>
-        <ContextProvider>
+        <UiContextProvider>
           <Layout>
             <Component {...pageProps} />
           </Layout>
-        </ContextProvider>
+        </UiContextProvider>
       </ReduxProvider>
     </>
   );

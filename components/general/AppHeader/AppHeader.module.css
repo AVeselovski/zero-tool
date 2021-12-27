@@ -96,5 +96,5 @@
 }
 .appHeaderSearch > button {
   @apply p-1;
-  @apply bg-gray-200 border-none rounded-none rounded-tr rounded-br;
+  @apply bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 border-none rounded-none rounded-tr rounded-br;
 }
