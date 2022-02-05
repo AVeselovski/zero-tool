@@ -1,95 +1,52 @@
 // /api/v1/projects/:projectId
-import dbConnect from "lib/dbConnect";
-import Project from "models/project";
+import { ZERO_API_URL } from "utils/constants";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-function handleError(error: any, res: NextApiResponse) {
-  res.status(500).json({
+function handleError(status: number = 500, error: any, res: NextApiResponse) {
+  console.error(error);
+
+  res.status(status).json({
     success: false,
-    error: error.errors || error,
-    message: error.errors?.title?.message || error._message || error.message,
+    error: error.errors?.[0] || error,
+    message:
+      error.errors?.[0] || error.errors?.title?.message || error._message || error.message || error,
   });
+
   return;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
-    query: { projectId },
+    headers: { authorization },
     method,
+    query: { projectId: boardId },
   } = req;
 
-  await dbConnect();
+  if (!req.headers.authorization) {
+    handleError(401, "Authorization header missing!", res);
+  }
 
   switch (method) {
     case "GET":
       try {
-        const project = await Project.findById(projectId);
-
-        if (!project) {
-          const error = new Error("Project not found.");
-
-          console.error(error);
-          return res.status(404).json({
-            success: false,
-            error: error.message,
-            message: error.message,
-          });
-        }
-
-        res.status(200).json({ success: true, data: project });
-      } catch (error) {
-        console.error(error);
-        handleError(error, res);
-      }
-      break;
-
-    case "PUT":
-      try {
-        const updatedProject = await Project.findByIdAndUpdate(projectId, req.body, {
-          new: true,
-          runValidators: true,
+        const response = await fetch(`${ZERO_API_URL}/boards/${boardId}`, {
+          method: "GET",
+          headers: {
+            Authorization: authorization!,
+            "Content-Type": "application/json",
+          },
         });
 
-        if (!updatedProject) {
-          const error = new Error("Project not found.");
+        const data = await response.json();
 
-          console.error(error);
-          return res.status(404).json({
-            success: false,
-            error: error.message,
-            message: error.message,
-          });
+        if (response.status === 200) {
+          res.status(200).json({ success: true, data });
+        } else {
+          handleError(response.status, data, res);
         }
-
-        res.status(200).json({ success: true, data: updatedProject });
       } catch (error) {
-        console.error(error);
-        handleError(error, res);
-      }
-      break;
-
-    case "DELETE":
-      try {
-        const deletedProject = await Project.deleteOne({ _id: projectId });
-
-        console.log(deletedProject);
-
-        if (!deletedProject.deletedCount) {
-          const error = new Error("Project not found.");
-
-          console.error(error);
-          return res.status(404).json({
-            success: false,
-            error: error.message,
-            message: error.message,
-          });
-        }
-
-        res.status(200).json({ success: true, data: {} });
-      } catch (error) {
-        console.error(error);
-        handleError(error, res);
+        handleError(500, error, res);
       }
       break;
 

@@ -7,7 +7,7 @@ import CloseIcon from "components/icons/CloseIcon";
 
 const modalSizes = {
   small: "20rem",
-  medium: "48rem",
+  medium: "36rem",
   large: "60rem",
 };
 

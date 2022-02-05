@@ -1,8 +1,8 @@
 .appHeader {
   @apply fixed w-full;
-  @apply border-b border-gray-200;
+  @apply border-b border-gray-200 shadow-sm backdrop-blur-lg;
 
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(10px);
   display: inline-grid;
   grid-template-columns: auto auto;
@@ -19,12 +19,21 @@
   pointer-events: auto;
 }
 
+.appHeaderCenter {
+  @apply flex justify-self-center self-center items-center justify-center;
+  @apply px-2;
+
+  display: none;
+  grid-column-start: 2;
+  pointer-events: auto;
+}
+
 .appHeaderRight {
   @apply flex justify-self-end self-center items-center;
   @apply pr-4 md:pr-6;
   @apply text-right;
 
-  grid-column-start: 2;
+  grid-column-start: 3;
   pointer-events: auto;
 }
 
@@ -33,7 +42,7 @@
 }
 
 .appHeaderBrand {
-  @apply mr-2;
+  @apply mx-3;
   @apply text-xl font-medium text-gray-700;
 
   white-space: nowrap;
@@ -45,24 +54,44 @@
   @apply font-extralight;
 }
 
-.appHeaderSubBrand {
-  @apply mx-2;
-  @apply text-xl font-medium text-gray-700;
-
-  position: relative;
-  white-space: nowrap;
-}
-.appHeaderSubBrand::before {
-  @apply absolute -left-3;
-  @apply font-light;
-
-  content: "/";
-}
-
 .appHeaderActions {
   @apply flex items-center;
   @apply ml-4;
 }
+.appHeaderLeft .appHeaderActions {
+  display: none;
+}
+
+.appHeaderSearch {
+  @apply flex items-center;
+}
+.appHeaderSearch > input[type="text"] {
+  @apply rounded-tr-none rounded-br-none;
+}
+.appHeaderSearch > button {
+  @apply p-1;
+  @apply bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 border-none rounded-none rounded-tr rounded-br;
+}
+
+@media (min-width: 768px) {
+  .appHeder {
+    grid-template-columns: auto 30% auto;
+  }
+  .appHeaderLeft .appHeaderActions {
+    display: flex;
+  }
+  .appHeaderCenter {
+    display: flex;
+  }
+}
+
+@media (min-width: 1024px) {
+  .appHeader {
+    grid-template-columns: 35% 30% 35%;
+  }
+}
+
+/* Unused for now
 
 .appHeaderNav {
   @apply flex items-center;
@@ -85,16 +114,6 @@
 }
 .appHeaderNav li .active {
   @apply bg-gray-200 text-black;
-}
+} 
 
-.appHeaderSearch {
-  @apply flex items-center;
-  @apply ml-8;
-}
-.appHeaderSearch > input[type="text"] {
-  @apply rounded-tr-none rounded-br-none;
-}
-.appHeaderSearch > button {
-  @apply p-1;
-  @apply bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 border-none rounded-none rounded-tr rounded-br;
-}
+*/

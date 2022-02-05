@@ -140,7 +140,7 @@ a.button {
 }
 
 .button.primary {
-  @apply bg-gray-700 hover:bg-gray-900 text-white;
+  @apply bg-gray-700 hover:bg-gray-900 disabled:hover:bg-gray-700 text-white;
 }
 
 /** Inputs **/
@@ -213,7 +213,7 @@ textarea.input.big {
 }
 .input-group label {
   @apply inline-block mb-1;
-  @apply font-normal;
+  @apply font-medium;
 
   font-size: 0.875rem /* 14px */;
 }
@@ -227,4 +227,17 @@ textarea.input.big {
 /* Nice... */
 ::selection {
   @apply bg-indigo-500 text-white;
+}
+
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loader {
+  animation: loader-spin 1.2s linear infinite;
 }

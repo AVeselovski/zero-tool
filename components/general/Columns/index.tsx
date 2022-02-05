@@ -5,11 +5,7 @@ function Column({ children }: { children: React.ReactNode }) {
 }
 
 function Columns({ children }: { children: React.ReactNode }) {
-  return (
-    <div className={styles.columnsContainer}>
-      <div className={styles.columns}>{children}</div>
-    </div>
-  );
+  return <div className={styles.columns}>{children}</div>;
 }
 
 Columns.Col = Column;

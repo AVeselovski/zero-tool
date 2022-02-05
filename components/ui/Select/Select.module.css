@@ -21,7 +21,7 @@
   @apply m-0 p-0;
   @apply bg-white border rounded shadow-md;
 
-  right: 0;
+  left: 0;
   top: calc(100% + 0.5rem);
   list-style: none;
   position: absolute;
@@ -39,6 +39,9 @@
   visibility: visible;
   transform: translateY(0);
 }
+.selectList.right {
+  right: 0;
+}
 
 .selectList li {
   @apply border-b border-gray-200;
@@ -49,7 +52,7 @@
 
 .selectList li > * {
   @apply flex items-center gap-2;
-  @apply px-5 py-4 w-full;
+  @apply px-5 py-3 w-full;
   @apply border-none bg-white;
 
   text-align: left;
@@ -63,4 +66,9 @@
 
 .selectList li .isSelected {
   @apply bg-gray-100;
+}
+
+.empty {
+  @apply px-5 py-4;
+  @apply bg-gray-100 text-gray-400;
 }

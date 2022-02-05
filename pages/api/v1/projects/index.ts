@@ -1,43 +1,51 @@
 // /api/v1/projects
-import dbConnect from "lib/dbConnect";
-import Project from "models/project";
+import { ZERO_API_URL } from "utils/constants";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-function handleError(error: any, res: NextApiResponse) {
-  res.status(500).json({
+function handleError(status: number = 500, error: any, res: NextApiResponse) {
+  console.error(error);
+
+  res.status(status).json({
     success: false,
-    error: error.errors || error,
-    message: error.errors?.title?.message || error._message || error.message,
+    error: error.errors?.[0] || error,
+    message:
+      error.errors?.[0] || error.errors?.title?.message || error._message || error.message || error,
   });
+
   return;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method } = req;
+  const {
+    headers: { authorization },
+    method,
+  } = req;
 
-  await dbConnect();
+  if (!req.headers.authorization) {
+    handleError(401, "Authorization header missing!", res);
+  }
 
   switch (method) {
     case "GET":
       try {
-        const projects = await Project.find({}).select({ title: 1 });
+        const response = await fetch(`${ZERO_API_URL}/boards`, {
+          method: "GET",
+          headers: {
+            Authorization: authorization!,
+            "Content-Type": "application/json",
+          },
+        });
 
-        res.status(200).json({ success: true, data: projects });
+        const data = await response.json();
+
+        if (response.status === 200) {
+          res.status(200).json({ success: true, data });
+        } else {
+          handleError(response.status, data, res);
+        }
       } catch (error) {
-        console.error(error);
-        handleError(error, res);
-      }
-      break;
-
-    case "POST":
-      try {
-        const project = await Project.create(req.body);
-
-        res.status(201).json({ success: true, data: project });
-      } catch (error) {
-        console.error(error);
-        handleError(error, res);
+        handleError(500, error, res);
       }
       break;
 

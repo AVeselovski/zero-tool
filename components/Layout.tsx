@@ -1,18 +1,41 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 import { useUi } from "app/ui-store";
+import { useAppDispatch } from "app/hooks";
+import { setCredentials } from "features/auth/authSlice";
 
 import styles from "./Layout.module.css";
 import AppHeader from "./general/AppHeader";
-import MobileNavigation from "./general/MobileNav";
+import LandingHeader from "./general/AppHeader/LandingHeader";
+import AppNavigation from "./general/AppNavigation";
 import Main from "./general/Main";
 import Footer from "./general/Footer";
 
 function Layout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
+  const { data: session } = useSession();
+
+  const dispatch = useAppDispatch();
+
   const { state } = useUi();
 
-  const router = useRouter();
+  const isAppRoute = router.asPath !== "/" && !router.asPath.includes("/auth");
+  const isProjectPage = router.asPath !== "/dashboard";
+
+  useEffect(() => {
+    if (session?.user) {
+      dispatch(
+        setCredentials({
+          user: { name: session.user.name as string, email: session.user.email as string },
+          token: session.accessToken as string,
+        })
+      );
+    }
+  }, [dispatch, session]);
 
   return (
     <>
@@ -21,12 +44,18 @@ function Layout({ children }: { children: React.ReactNode }) {
         <meta name="description" content="Description of this thing..." />
       </Head>
 
-      {router.asPath !== "/" && <AppHeader />}
-      {router.asPath !== "/" && <MobileNavigation />}
+      {router.asPath === "/" && <LandingHeader />}
 
-      <div className={`${styles.layout}${state.sideNavOpen ? ` ${styles.isOpen}` : ""}`}>
+      {isAppRoute && <AppHeader />}
+      {isAppRoute && <AppNavigation />}
+
+      <div
+        className={`${styles.layout}${
+          isProjectPage && state.projectSidebarOpen ? ` ${styles.isOpen}` : ""
+        }`}
+      >
         <Main>{children}</Main>
-        <Footer />
+        {router.asPath === "/" && <Footer />}
       </div>
     </>
   );

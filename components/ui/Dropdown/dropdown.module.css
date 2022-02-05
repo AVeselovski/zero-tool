@@ -46,14 +46,18 @@
 
 .ddMenu ul li > * {
   @apply flex items-center gap-2;
-  @apply px-5 py-4 w-full;
+  @apply px-5 py-3 w-full;
   @apply border-none bg-white;
 
   text-align: left;
   text-decoration: none;
   white-space: nowrap;
 }
-.ddMenu ul li > *:hover,
-.ddMenu ul li > *:focus {
+.ddMenu ul li > button:not(:disabled):hover,
+.ddMenu ul li > button:not(:disabled):focus {
   @apply bg-gray-100;
+}
+
+.ddMenu ul li button:disabled {
+  @apply text-gray-400 cursor-not-allowed;
 }

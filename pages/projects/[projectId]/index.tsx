@@ -1,77 +1,88 @@
 // zero-tool.com/projects/:projectId
+import type { GetServerSidePropsContext } from "next";
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+  if (!session) {
+    return {
+      redirect: { destination: "/auth", permanent: false },
+    };
+  }
+
+  return {
+    props: { session },
+  };
+}
+
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { getSession } from "next-auth/react";
 
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { getProjectData, selectTaskGroups } from "features/tasks/tasksSlice";
-import { getAllProjects, setActiveProject } from "features/projects/projectsSlice";
+import { useFetchProjectsQuery, useFetchProjectByIdQuery } from "app/services/zeroApi";
+import { setActiveProject } from "features/projects/projectsSlice";
+import { selectLists, selectProject } from "features/project/projectSlice";
+import { selectToken } from "features/auth/authSlice";
 
 import Container from "components/ui/Container";
 import Columns from "components/general/Columns";
-import TaskGroup from "components/tasks/TaskGroup";
-import NewGroup from "components/tasks/NewGroup";
-import Loader from "components/ui/Loader";
+import LoaderIcon from "components/icons/LoaderIcon";
+import Sidebar from "components/general/Sidebar";
+import List from "features/project/List";
+import NewList from "features/project/NewList";
 
-export default function ProjectPage() {
-  const [isFetching, setIsFetching] = useState(true);
+import type { Session } from "next-auth";
 
+export default function ProjectPage({ session }: { session: Session }) {
   const router = useRouter();
   const queryId = router.query.projectId;
 
-  const groups = useAppSelector(selectTaskGroups);
+  const token = useAppSelector(selectToken);
+  const project = useAppSelector(selectProject);
+  const lists = useAppSelector(selectLists);
+
   const dispatch = useAppDispatch();
 
-  // get project data on project query change
+  useFetchProjectsQuery(undefined, { skip: !token });
+
+  const { isFetching, refetch: refetchProject } = useFetchProjectByIdQuery(queryId as string, {
+    skip: !token || !queryId,
+  });
+
+  // refetch project data on project query change
   useEffect(() => {
-    async function _getProjectData(id: string) {
-      try {
-        setIsFetching(true);
-        await dispatch(getProjectData(id)).unwrap();
-      } catch (error) {
-        console.error("Failed to fetch project data:", error);
-      } finally {
-        setIsFetching(false);
-      }
-    }
-
-    if (typeof queryId === "string") {
-      _getProjectData(queryId);
-      dispatch(setActiveProject(queryId));
-    }
-  }, [queryId, dispatch]);
-
-  // refetch all available projects
-  useEffect(() => {
-    async function _getAllProjects() {
-      try {
-        await dispatch(getAllProjects()).unwrap();
-      } catch (error) {
-        console.error("Failed to fetch all projects:", error);
-      }
-    }
-
-    _getAllProjects();
-  }, [dispatch]);
+    refetchProject();
+    dispatch(setActiveProject(Number(queryId)));
+  }, [queryId, refetchProject, dispatch]);
 
   return (
-    <Container isFluid isScrollable>
-      <Columns>
-        {/** TODO: render skeleton loaders while fetching */}
-        {groups.map((group) => (
-          <Columns.Col key={group._id}>
-            <TaskGroup group={group} />
-          </Columns.Col>
-        ))}
+    <>
+      <Head>
+        <title>{project.name} | Zero Tool</title>
+        <meta name="description" content="Description of this app..." />
+      </Head>
 
-        {/** TODO: do not render while fetching */}
-        {!isFetching && (
-          <Columns.Col>
-            <NewGroup />
-          </Columns.Col>
-        )}
+      <Sidebar />
 
-        {isFetching && <Loader />}
-      </Columns>
-    </Container>
+      <Container isFluid isScrollable>
+        <Columns>
+          {/** TODO: render skeleton loaders while fetching */}
+          {isFetching && !lists.length && <LoaderIcon className="loader" />}
+
+          {lists.map((list) => (
+            <Columns.Col key={list.id}>
+              <List list={list} />
+            </Columns.Col>
+          ))}
+
+          {!isFetching && (
+            <Columns.Col>
+              <NewList />
+            </Columns.Col>
+          )}
+        </Columns>
+      </Container>
+    </>
   );
 }

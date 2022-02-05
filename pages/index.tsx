@@ -19,8 +19,17 @@ export default function HomePage() {
         <meta name="description" content="Description of this thing..." />
       </Head>
       <Container>
-        <h1>Home page</h1>
-        <Link href="/dashboard">Dashboard</Link>
+        <div className="text-center my-14 mt-32">
+          <h1 className="mb-4 text-5xl">Kanban project management tool</h1>
+          <p className="mb-14 text-2xl">
+            Pretend to be <i>agile</i> with this zero agility tool!
+          </p>
+          <div>
+            <Link href="/auth/register">
+              <a className="button big primary round">Get started</a>
+            </Link>
+          </div>
+        </div>
       </Container>
     </>
   );

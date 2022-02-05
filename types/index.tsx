@@ -1,5 +1,4 @@
-import { IProject } from "./Project";
-import { IRequestOptions } from "./RequestOptions";
-import { ITask, IGroup } from "./Task";
+import { IProject, IList, ICard } from "./Project";
+import { IAuthUser, IUser } from "./User";
 
-export type { IProject, IRequestOptions, ITask, IGroup };
+export type { IProject, IList, ICard, IAuthUser, IUser };

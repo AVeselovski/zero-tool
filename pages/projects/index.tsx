@@ -1,11 +1,15 @@
 // zero-tool.com/projects
+export async function getStaticProps() {
+  return {
+    redirect: {
+      destination: "/dashboard",
+      permanent: false,
+    },
+  };
+}
 
 import Container from "components/ui/Container";
 
 export default function ProjectsPage() {
-  return (
-    <Container>
-      <h1>Projects page (unused for now)</h1>
-    </Container>
-  );
+  return <Container>Projects page (unused for now)</Container>;
 }

@@ -1,5 +1,6 @@
 import { Provider as ReduxProvider } from "react-redux";
 import { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
 
 import { store } from "app/store";
 import { UiContextProvider } from "app/ui-store";
@@ -10,7 +11,7 @@ import Layout from "components/Layout";
 
 export default function Application({ Component, pageProps }: AppProps) {
   return (
-    <>
+    <SessionProvider session={pageProps.session} refetchInterval={0}>
       <ReduxProvider store={store}>
         <UiContextProvider>
           <Layout>
@@ -18,6 +19,6 @@ export default function Application({ Component, pageProps }: AppProps) {
           </Layout>
         </UiContextProvider>
       </ReduxProvider>
-    </>
+    </SessionProvider>
   );
 }

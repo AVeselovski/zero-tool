@@ -9,9 +9,9 @@ import CheckIcon from "@components/icons/CheckIcon";
 type Props = {
   children?: React.ReactNode;
   className?: string;
-  list: { label: string; value: string }[] | [];
-  onSelect: (val: string) => void;
-  selected: { label: string; value: string };
+  list: { label: string; value: number | null }[] | [];
+  onSelect: (val: number) => void;
+  selected: { label: string; value: number | null };
 };
 
 function Select({ children, className = "", list = [], onSelect = () => {}, selected }: Props) {
@@ -20,11 +20,19 @@ function Select({ children, className = "", list = [], onSelect = () => {}, sele
 
   const classNames = className.split(" ");
 
+  function formattedString(string: string) {
+    if (string.length > 16) {
+      return string.substring(0, 16 - 3) + "...";
+    }
+
+    return string;
+  }
+
   function handleClick() {
     setIsActive((prevState) => !prevState);
   }
 
-  function handleItemClick(item: string) {
+  function handleItemClick(item: number) {
     onSelect(item);
     setIsActive((prevState) => !prevState);
   }
@@ -32,7 +40,7 @@ function Select({ children, className = "", list = [], onSelect = () => {}, sele
   return (
     <div className={styles.selectContainer}>
       <div className={[styles.selectTrigger, ...classNames].join(" ")} onClick={handleClick}>
-        {selected?.label || "..."}{" "}
+        {formattedString(selected?.label) || "..."}{" "}
         {isActive ? <ChevronUpIcon size={18} /> : <ChevronDownIcon size={18} />}
       </div>
 
@@ -40,12 +48,13 @@ function Select({ children, className = "", list = [], onSelect = () => {}, sele
         className={`${styles.selectList}${isActive ? ` ${styles.isActive}` : ""}`}
         ref={dropdownRef}
       >
+        {!list.length && <div className={styles.empty}>No items...</div>}
         {list.map((item) => (
           <li key={item.value}>
             <button
               className={item.value === selected.value ? styles.isSelected : ""}
               disabled={item.value === selected.value}
-              onClick={handleItemClick.bind(null, item.value)}
+              onClick={handleItemClick.bind(null, Number(item.value))}
             >
               {item.value === selected.value && <CheckIcon size={18} />}
               {item.label}

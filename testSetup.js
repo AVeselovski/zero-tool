@@ -5,7 +5,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 
 import projectsReducer from "@features/projects/projectsSlice";
-import tasksReducer from "@features/tasks/tasksSlice";
+import projectReducer from "@features/project/projectSlice";
 
 function render(
   ui,
@@ -14,7 +14,7 @@ function render(
     store = configureStore({
       reducer: {
         projects: projectsReducer,
-        tasks: tasksReducer,
+        project: projectReducer,
       },
       preloadedState,
     }),

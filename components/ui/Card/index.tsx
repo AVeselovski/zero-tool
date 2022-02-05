@@ -18,13 +18,16 @@ function CardFooter({ children }: { children: React.ReactNode }) {
 
 function Card({
   children,
-  isGroup = false,
+  className = "",
+  isList = false,
 }: {
+  className?: string;
   children: React.ReactNode;
-  isGroup?: boolean;
+  isList?: boolean;
 }) {
-  const classes: string[] = [styles.card];
-  isGroup && classes.push(styles.cardGroup);
+  let classes: string[] = [styles.card];
+  isList && classes.push(styles.cardGroup);
+  classes = [...classes, ...className.split(" ")];
 
   return <div className={classes.join(" ")}>{children}</div>;
 }

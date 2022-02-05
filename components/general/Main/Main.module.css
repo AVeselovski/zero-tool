@@ -1,5 +1,5 @@
 .main {
-  @apply px-2 pb-0 pt-16 md:px-6;
+  @apply px-0 pb-0 pt-16;
 }
 .main a {
   @apply text-blue-500;

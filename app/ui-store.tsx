@@ -1,17 +1,16 @@
-// UNUSED, for UI handling in the future
-
 import React, { createContext, useContext, useReducer, Reducer } from "react";
 
 enum ActionType {
-  ToggleSideNav = "toggle-side-nav",
+  ToggleAppNav = "toggle-app-nav",
+  ToggleProjectSidebar = "toggle-project-sidebar",
   // ...
 }
 
 interface IState {
-  sideNavOpen: boolean;
+  appNavOpen: boolean;
+  projectSidebarOpen: boolean;
 }
 
-// modify this once in use
 interface Action {
   type: string;
   payload?: any;
@@ -19,15 +18,18 @@ interface Action {
 
 interface ContextProps {
   state: IState;
-  toggleNav: () => void;
+  toggleAppNav: () => void;
+  toggleProjectSidebar: () => void;
 }
 
-const initialState: IState = { sideNavOpen: false };
+const initialState: IState = { appNavOpen: false, projectSidebarOpen: false };
 
 const reducer = (state: IState, action: Action): IState => {
   switch (action.type) {
-    case ActionType.ToggleSideNav:
-      return { ...state, sideNavOpen: !state.sideNavOpen };
+    case ActionType.ToggleAppNav:
+      return { ...state, appNavOpen: !state.appNavOpen };
+    case ActionType.ToggleProjectSidebar:
+      return { ...state, projectSidebarOpen: !state.projectSidebarOpen };
     default:
       return state;
   }
@@ -37,15 +39,22 @@ export const UiContext = createContext({} as ContextProps);
 export const UiContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [state, dispatch] = useReducer<Reducer<IState, Action>>(reducer, initialState);
 
-  function toggleNav() {
+  function toggleAppNav() {
     dispatch({
-      type: ActionType.ToggleSideNav,
+      type: ActionType.ToggleAppNav,
+    });
+  }
+
+  function toggleProjectSidebar() {
+    dispatch({
+      type: ActionType.ToggleProjectSidebar,
     });
   }
 
   const context = {
     state,
-    toggleNav,
+    toggleAppNav,
+    toggleProjectSidebar,
   };
 
   return <UiContext.Provider value={context}>{children}</UiContext.Provider>;

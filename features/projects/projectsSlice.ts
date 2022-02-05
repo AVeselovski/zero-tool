@@ -1,25 +1,20 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import api from "services/api";
 import { RootState } from "app/store";
+import { zeroApi } from "app/services/zeroApi";
 
-import type { IProject } from "../../types";
+import type { IProject } from "types";
 
-export const getAllProjects = createAsyncThunk("tasks/getAllProjects", async () => {
-  const response = await api.get(`projects`);
-  return response.data;
-});
-
-export interface ProjectsState {
+type ProjectsState = {
   projects: IProject[];
-  activeProject: string;
+  activeProject: number | null;
   status: string;
   error: string | undefined;
-}
+};
 
 const initialState: ProjectsState = {
   projects: [],
-  activeProject: "",
+  activeProject: null,
   status: "idle",
   error: undefined,
 };
@@ -28,38 +23,32 @@ const slice = createSlice({
   name: "projects",
   initialState,
   reducers: {
-    // set active project (TODO: should be persisted in local storage)
-    setActiveProject: (state, action: PayloadAction<string>) => {
+    // TODO: should be persisted in local storage
+    setActiveProject: (state, action: PayloadAction<number>) => {
       state.activeProject = action.payload;
+    },
+    setProjects: (state, action: PayloadAction<IProject[]>) => {
+      state.projects = action.payload;
     },
   },
   extraReducers(builder) {
-    /* handle GET projects */
-
-    builder.addCase(getAllProjects.pending, (state) => {
-      state.status = "loading";
+    /* Handle GET projects */
+    builder.addMatcher(zeroApi.endpoints.fetchProjects.matchFulfilled, (state, { payload }) => {
+      state.projects = payload;
     });
-    builder.addCase(getAllProjects.fulfilled, (state, action) => {
-      state.projects = action.payload;
-      state.status = "idle";
-    });
-    builder.addCase(getAllProjects.rejected, (state, action) => {
-      state.error = action.error.message;
-      state.status = "failed";
-    });
-
-    /* * */
   },
 });
 
-// Actions
-export const { setActiveProject } = slice.actions;
+/* Actions */
 
-// Selectors
+export const { setActiveProject, setProjects } = slice.actions;
+
+/* Selectors */
+
 export const selectProjects = (state: RootState) => state.projects.projects;
 export const selectMappedProjects = (state: RootState) =>
-  state.projects.projects.map((p) => ({ label: p.title, value: p._id }));
+  state.projects.projects.map((p) => ({ label: p.name, value: p.id }));
 export const selectActiveProject = (state: RootState) =>
-  state.projects.projects.find((p) => p._id === state.projects.activeProject);
+  state.projects.projects.find((p) => p.id === state.projects.activeProject);
 
 export default slice.reducer;

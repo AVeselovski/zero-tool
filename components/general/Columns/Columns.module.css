@@ -1,10 +1,13 @@
+/* 
 .columnsContainer {
   overflow-x: visible;
-}
+} 
+*/
 .columns {
   @apply flex gap-2 items-stretch justify-start;
 
-  min-height: calc(100vh - 10rem);
+  /* AppHeader + spacing, should be programmatic when ContentHeader is implemented */
+  min-height: calc(100vh - 6rem);
 }
 .columns > .column {
   box-sizing: content-box;
@@ -16,5 +19,5 @@
   @apply hover:bg-gray-200 border-0;
 }
 .columns > .column:last-of-type {
-  @apply pr-7;
+  @apply pr-6; /* Offset x-scroll container */
 }
