@@ -38,9 +38,9 @@ const Card = ({
       <CardComponent.Header>
         <CardComponent.HeaderTitle>
           <DraggableIcon />
-          {card?.name}
+          <span className="inline-block mt-0.5">{card?.name}</span>
         </CardComponent.HeaderTitle>
-        <Dropdown className="button icon round ml-1" toggleContent={<EllipsisVIcon />}>
+        <Dropdown className="button icon round ml-2" toggleContent={<EllipsisVIcon />}>
           <Dropdown.List>
             <button disabled={isProcessing} onClick={() => onEdit(card.id)}>
               <EditIcon size={18} /> Edit card
@@ -69,7 +69,7 @@ const Card = ({
         </Dropdown>
       </CardComponent.Header>
       <CardComponent.Body>{card?.body}</CardComponent.Body>
-      <CardComponent.Footer>#some tag</CardComponent.Footer>
+      <CardComponent.Footer></CardComponent.Footer>
     </CardComponent>
   );
 };

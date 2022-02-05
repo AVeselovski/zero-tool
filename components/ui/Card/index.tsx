@@ -8,11 +8,14 @@ function CardHeaderTitle({ children }: { children: React.ReactNode }) {
   return <div className={styles.cardHeaderTitle}>{children}</div>;
 }
 
-function CardBody({ children }: { children: React.ReactNode }) {
-  return <div className={styles.cardBody}>{children}</div>;
+function CardBody({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  let classes: string[] = [styles.cardBody];
+  classes = [...classes, ...className.split(" ")];
+
+  return <div className={classes.join(" ")}>{children}</div>;
 }
 
-function CardFooter({ children }: { children: React.ReactNode }) {
+function CardFooter({ children }: { children?: React.ReactNode }) {
   return <div className={styles.cardFooter}>{children}</div>;
 }
 

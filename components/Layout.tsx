@@ -24,7 +24,7 @@ function Layout({ children }: { children: React.ReactNode }) {
   const { state } = useUi();
 
   const isAppRoute = router.asPath !== "/" && !router.asPath.includes("/auth");
-  const isProjectPage = router.asPath !== "/dashboard";
+  const isProjectPage = router.asPath.includes("/projects");
 
   useEffect(() => {
     if (session?.user) {

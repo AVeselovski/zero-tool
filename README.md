@@ -10,7 +10,7 @@ Get the connection string of your MongoDB server. In the case of MongoDB Atlas, 
 mongodb+srv://<username>:<password>@my-project-abc123.mongodb.net/zero-tool?retryWrites=true&w=majority
 ```
 
-Then copy the .env.local.example file in project root to .env.local and assign the correct connection string.
+Copy the .env.local.example file in project root to .env.local and assign the correct values.
 
 ### Running development server:
 

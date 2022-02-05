@@ -193,6 +193,8 @@ select.input {
 }
 
 textarea {
+  @apply text-sm !important;
+
   display: block;
   height: auto;
   line-height: 1.25;
@@ -204,7 +206,7 @@ textarea.input.big {
   @apply px-3 py-2;
 
   height: auto;
-  font-size: 1rem /* 16px */;
+  font-size: 1rem !important /* 16px */;
   min-height: 4rem /* 64px */;
 }
 

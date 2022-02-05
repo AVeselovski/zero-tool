@@ -15,7 +15,7 @@
 }
 
 .ddMenu {
-  @apply bg-white border rounded shadow-md;
+  @apply bg-white border rounded shadow-md overflow-hidden;
 
   position: absolute;
   opacity: 0;
@@ -47,7 +47,7 @@
 .ddMenu ul li > * {
   @apply flex items-center gap-2;
   @apply px-5 py-3 w-full;
-  @apply border-none bg-white;
+  @apply border-none rounded-none bg-white;
 
   text-align: left;
   text-decoration: none;

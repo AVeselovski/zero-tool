@@ -54,7 +54,7 @@ function ListHeader({
       {!showForm && (
         <Card.HeaderTitle>
           <DraggableIcon />
-          <span className="cursor-pointer font-medium" onClick={toggleForm}>
+          <span className="cursor-pointer font-medium text-base" onClick={toggleForm}>
             {name}
           </span>
         </Card.HeaderTitle>

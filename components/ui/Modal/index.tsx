@@ -60,6 +60,8 @@ function Modal({
   size = "medium",
 }: Props) {
   const [isActive, setIsActive] = useState(false);
+  const [targetEl, setTargetEl] = useState("");
+
   const backdrop = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,13 +72,27 @@ function Modal({
       setIsActive(isOpen);
     };
 
-    const handleKey = (e: any) => !isLocked && [27].indexOf(e.which) >= 0 && onClose();
+    const handleKey = (e: KeyboardEvent) => !isLocked && [27].indexOf(e.which) >= 0 && onClose();
 
-    const handleClick = (e: any) => !isLocked && e.target === current && onClose();
+    const handleClick = (e: Event) => {
+      const target = e.target as HTMLElement;
+
+      !isLocked && target === current && targetEl === "modal-backdrop" && onClose();
+    };
+
+    /**
+     * Prevent Chrome from closing modals prematurely - FIX
+     */
+    const handleMousedown = (e: Event) => {
+      const target = e.target as HTMLElement;
+
+      setTargetEl(target.id);
+    };
 
     if (current) {
       current.addEventListener("transitionend", onTransitionEnd);
       current.addEventListener("click", handleClick);
+      current.addEventListener("mousedown", handleMousedown);
       window.addEventListener("keyup", handleKey);
     }
 
@@ -93,20 +109,22 @@ function Modal({
       if (current) {
         current.removeEventListener("transitionend", onTransitionEnd);
         current.removeEventListener("click", handleClick);
+        current.removeEventListener("mousedown", handleMousedown);
       }
 
       document.querySelector("#__next")!.removeAttribute("inert");
       window.removeEventListener("keyup", handleKey);
     };
-  }, [isOpen, isLocked, onAppear, onClose]);
+  }, [isOpen, isLocked, targetEl, onAppear, onClose]);
 
   return (
     <>
       {(isOpen || isActive) && (
         <Portal className="modal-portal">
           <div
-            ref={backdrop}
+            id="modal-backdrop"
             className={`${styles.backdrop}${isActive && isOpen ? ` ${styles.active}` : ""}`}
+            ref={backdrop}
           >
             <div className={styles.modal} style={{ maxWidth: modalSizes[size] }}>
               {children}

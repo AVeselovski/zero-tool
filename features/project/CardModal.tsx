@@ -65,7 +65,7 @@ const CardModal = ({ isOpen = false, onClose = () => {}, listId, cardId = undefi
           <div className="input-group">
             <label htmlFor="name">Card title</label>
             <input
-              className="input"
+              className="input big"
               defaultValue={card?.name || ""}
               disabled={isSubmitting}
               id="name"
@@ -77,7 +77,7 @@ const CardModal = ({ isOpen = false, onClose = () => {}, listId, cardId = undefi
           <div className="input-group">
             <label htmlFor="body">Card body</label>
             <textarea
-              className="input big h-24"
+              className="input big min-h-[160px]"
               defaultValue={card?.body || ""}
               disabled={isSubmitting}
               id="body"

@@ -14,7 +14,7 @@
 .cardHeaderTitle {
   @apply flex items-start;
   @apply pt-1;
-  @apply font-normal;
+  @apply font-normal text-sm;
 }
 .cardHeaderTitle :first-child {
   @apply -ml-1.5 mr-1;
@@ -23,6 +23,7 @@
 
 .cardBody {
   @apply p-2;
+  @apply text-sm;
 
   line-height: 1.25;
 }

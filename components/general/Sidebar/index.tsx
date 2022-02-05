@@ -29,7 +29,7 @@ function Sidebar() {
                 M
               </div>
               <div className="block">
-                <div className="mb-0">{u.username}</div>
+                <div className="mb-0 text-sm">{u.username}</div>
               </div>
             </div>
           ))}
