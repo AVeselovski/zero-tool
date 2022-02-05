@@ -1,5 +1,5 @@
 // zero-tool.com/projects
-export async function getStaticProps() {
+export async function getServerSideProps() {
   return {
     redirect: {
       destination: "/dashboard",
