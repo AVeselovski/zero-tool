@@ -2,7 +2,7 @@ This is project management tool (simplified trello clone), built with [Next.js](
 
 ## Developing
 
-### Setting up:
+### Setting up (OUTDATED, will update later):
 
 Get the connection string of your MongoDB server. In the case of MongoDB Atlas, it should be a string like this:
 
