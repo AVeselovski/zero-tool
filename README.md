@@ -1,16 +1,6 @@
-This is project management tool (simplified trello clone), built with [Next.js](https://nextjs.org/).
+This is a project management tool (trello clone of sorts), built with [Next.js](https://nextjs.org/).
 
 ## Developing
-
-### Setting up (OUTDATED, will update later):
-
-Get the connection string of your MongoDB server. In the case of MongoDB Atlas, it should be a string like this:
-
-```
-mongodb+srv://<username>:<password>@my-project-abc123.mongodb.net/zero-tool?retryWrites=true&w=majority
-```
-
-Copy the .env.local.example file in project root to .env.local and assign the correct values.
 
 ### Running development server:
 
@@ -30,4 +20,4 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ## Deployment
 
-This repo master branch is connected to Vercel and deploys automatically on push. Visit [Vercel](https://vercel.com) for more information and instructions.
+**UPDATE**: This project is long abandoned. No working deployment exists, since Heroku committed Seppuku (REST API disconnected).
